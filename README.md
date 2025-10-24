@@ -6,7 +6,7 @@ Quickly edit git commit message using a custom format
 
 ## Quick Start - 使用方法
 
-Run `Git Commit Message` from the command palette or click the edit button in the upper right corner of the repository changed message input box.
+Run `Git Commit Message` from the command palette or click the edit button in the upper right corner of the repository changed message input box
 
 使用命令面板运行 `Git Commit Message` 或点击仓库更改消息输入框右上角的编辑按键
 
@@ -56,10 +56,10 @@ Signed-off-by: Signer <signer@sample.com>
 
 ## Setting - 设置
 
-- `customTypes`: Custom Types - 自定义类型
-- `enableJira`: Enable Jira - 是否使用 Jira
-- `jiraPrefix`: Jira project prefix, only valid when `Enable Jira` is picked - Jira 项目前缀, 仅在 `Enable Jira` 启用时有效
-- `jiraUrl`: Jira URL, only valid when `Enable Jira` is picked - Jira URL, 仅在 `Enable Jira` 启用时有效
+- `customTypes`: Custom types - 自定义类型
+- `jira.enable`: Jira enable - Jira 使能
+- `jira.prefix`: Jira project prefix, only valid when Jira enable is picked - Jira 项目前缀, 仅在 Jira 使能启用时有效
+- `jira.url`: Jira URL, only valid when Jira enable is picked - Jira URL, 仅在 Jira enable 使能启用时有效
 - `language`: Commit message language - 提交说明语言
 - `reporters`: Reporters - 报告人列表
   - `reporters[].email`: Reporter's email - 报告人邮箱
@@ -78,7 +78,9 @@ Signed-off-by: Signer <signer@sample.com>
   "gitCommitMessage.customTypes": {
     "customType": "(customType): custom type description"
   },
-  "gitCommitMessage.enableJira": true,
+  "gitCommitMessage.jira.enable": true,
+  "gitCommitMessage.jira.prefix": "PROJECT-",
+  "gitCommitMessage.jira.url": "https://jira.sample.com/browse/",
   "gitCommitMessage.reporters": [
     { "name": "Reporter1", "email": "reporter1@sample.com", "picked": true },
     { "name": "Reporter2", "email": "reporter2@sample.com" }
@@ -87,8 +89,6 @@ Signed-off-by: Signer <signer@sample.com>
     { "name": "Reviewer1", "email": "reviewer1@sample.com", "picked": true },
     { "name": "Reviewer2", "email": "reviewer2@sample.com" }
   ],
-  "gitCommitMessage.jiraPrefix": "PROJECT-",
-  "gitCommitMessage.jiraUrl": "https://jira.sample.com/browse/",
   "gitCommitMessage.signer.email": "signer@sample.com",
   "gitCommitMessage.signer.name": "Signer"
 }
@@ -103,8 +103,8 @@ The template using the [Jinja2](https://palletsprojects.com/projects/jinja/) tem
 ```json
 {
   "gitCommitMessage.template": [
-    "{% if jiraId %}",
-    "{{ type }}[{{ jiraPrefix }}{{ jiraId }}]{{ scope }}: {{ summary }}",
+    "{% if jira.id %}",
+    "{{ type }}[{{ jira.prefix }}{{ jira.id }}]{{ scope }}: {{ summary }}",
     "{% elif type and scope %}",
     "{{ type }}.{{ scope }}: {{ summary }}",
     "{% elif type or scope %}",
@@ -119,8 +119,8 @@ The template using the [Jinja2](https://palletsprojects.com/projects/jinja/) tem
     "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
     "{% endif %}",
     "",
-    "{% if enableJira and jiraUrl and jiraId %}",
-    "[{{ jiraPrefix }}{{ jiraId }}]: {{ jiraUrl }}{{ jiraPrefix }}{{ jiraId }}",
+    "{% if jira.enable and jira.url and jira.id %}",
+    "[{{ jira.prefix }}{{ jira.id }}]: {{ jira.url }}{{ jira.prefix }}{{ jira.id }}",
     "{% endif %}",
     "",
     "{% for reporter in reporters -%}",
@@ -144,7 +144,7 @@ If you need to customize it, you can configure a text line list. The complete te
 
 - Input - 输入
   - `type`: Type - 类型
-  - `jiraId`: Jira ID - Jira ID
+  - `jira.id`: Jira ID - Jira ID
   - `scope`: Scope - 范围
   - `summary`: Summary - 摘要
   - `detail`: Detail - 详情
@@ -156,9 +156,9 @@ If you need to customize it, you can configure a text line list. The complete te
     - `reviewers[].name`: Reviewer's name - 审阅人名字
     - `reviewers[].email`: Reviewer's email - 审阅人邮箱
 - Setting - 配置
-  - `enableJira`: Enable Jira - 是否使用 Jira
-  - `jiraPrefix`: Jira prefix - Jira 项目前缀
-  - `jiraUrl`: Jira URL - Jira URL
+  - `jira.enable`: Jira enable - Jira 使能
+  - `jira.prefix`: Jira prefix - Jira 项目前缀
+  - `jira.url`: Jira URL - Jira URL
   - `signer.name`: Signer name - 报告人名字
   - `signer.email`: Signer email - 报告人邮箱
 - Text - 文本

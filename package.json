@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -55,8 +55,8 @@
           "type": "array",
           "markdownDescription": "%template%",
           "default": [
-            "{% if jiraId %}",
-            "{{ type }}[{{ jiraPrefix }}{{ jiraId }}]{{ scope }}: {{ summary }}",
+            "{% if jira.id %}",
+            "{{ type }}[{{ jira.prefix }}{{ jira.id }}]{{ scope }}: {{ summary }}",
             "{% elif type and scope %}",
             "{{ type }}.{{ scope }}: {{ summary }}",
             "{% elif type or scope %}",
@@ -71,8 +71,8 @@
             "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
             "{% endif %}",
             "",
-            "{% if enableJira and jiraUrl and jiraId %}",
-            "[{{ jiraPrefix }}{{ jiraId }}]: {{ jiraUrl }}{{ jiraPrefix }}{{ jiraId }}",
+            "{% if jira.enable and jira.url and jira.id %}",
+            "[{{ jira.prefix }}{{ jira.id }}]: {{ jira.url }}{{ jira.prefix }}{{ jira.id }}",
             "{% endif %}",
             "",
             "{% for reporter in reporters -%}",
@@ -100,19 +100,19 @@
           },
           "markdownDescription": "%customTypes%"
         },
-        "gitCommitMessage.enableJira": {
+        "gitCommitMessage.jira.enable": {
           "type": "boolean",
-          "description": "%enableJira%",
+          "description": "%jira.enable%",
           "default": true
         },
-        "gitCommitMessage.jiraUrl": {
+        "gitCommitMessage.jira.url": {
           "type": "string",
-          "markdownDescription": "%jiraUrl%",
+          "markdownDescription": "%jira.url%",
           "default": ""
         },
-        "gitCommitMessage.jiraPrefix": {
+        "gitCommitMessage.jira.prefix": {
           "type": "string",
-          "markdownDescription": "%jiraPrefix%",
+          "markdownDescription": "%jira.prefix%",
           "default": ""
         },
         "gitCommitMessage.reporters": {

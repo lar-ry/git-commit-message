@@ -1,10 +1,10 @@
 {
     "customTypes": "Custom Types, e.g. `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "Description",
-    "enableJira": "Enable Jira",
     "gitCommitMessage": "Git Commit Message",
-    "jiraPrefix": "Jira project prefix, only valid when [Enable Jira](#gitCommitMessage.enableJira) is picked, e.g. PROJECT-",
-    "jiraUrl": "Jira URL, only valid when [Enable Jira](#gitCommitMessage.enableJira) is picked, e.g. https://jira.sample.com/browse/",
+    "jira.enable": "Jira enable",
+    "jira.prefix": "Jira project prefix, only valid when [Jira: Enable](#gitCommitMessage.jira.enable) is picked, e.g. PROJECT-",
+    "jira.url": "Jira URL, only valid when [Jira: Enable](#gitCommitMessage.jira.enable) is picked, e.g. https://jira.sample.com/browse/",
     "language": "Commit message language",
     "name": "Name",
     "picked": "Picked default",
