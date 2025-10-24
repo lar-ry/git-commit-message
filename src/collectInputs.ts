@@ -24,21 +24,17 @@ export async function collectInputs() {
     });
   }
 
-  function getRepo() {
-    // 获取 Git 扩展
-    const gitExtension = extensions.getExtension("vscode.git")?.exports;
-    if (!gitExtension) {
-      return window.showErrorMessage(l10n.t("Git extension not activated"));
-    }
-    const git = gitExtension.getAPI(1);
-    const repo = git.repositories[0];
-    if (!repo) {
-      return window.showErrorMessage(l10n.t("No Git repository found"));
-    }
-    return repo;
+  // Get the Git extension
+  const gitExtension = extensions.getExtension("vscode.git")?.exports;
+  if (!gitExtension) {
+    return window.showErrorMessage(l10n.t("Git extension not activated"));
   }
-  const repo = getRepo();
-  const config = workspace.getConfiguration("gitCommitMessage");
+  const git = gitExtension.getAPI(1);
+  const repo = git.repositories[0];
+  if (!repo) {
+    return window.showErrorMessage(l10n.t("No Git repository found"));
+  }
+
   const {
     language,
     enableJira,
@@ -48,7 +44,7 @@ export async function collectInputs() {
     reviewers,
     signerName,
     signerEmail,
-  } = config;
+  } = workspace.getConfiguration("gitCommitMessage");
   let totalSteps = 6;
   totalSteps += enableJira ? 1 : 0;
   totalSteps += reporters.length ? 1 : 0;
