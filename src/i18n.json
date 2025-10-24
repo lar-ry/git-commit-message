@@ -2,6 +2,7 @@
   "en": {
     "breakingChange": "BREAKING_CHANGE",
     "build": "build",
+    "chore": "chore",
     "docs": "docs",
     "feat": "feat",
     "fix": "fix",
@@ -19,6 +20,7 @@
   "zh-cn": {
     "breakingChange": "破坏性变更",
     "build": "构建",
+    "chore": "杂务",
     "docs": "文档",
     "feat": "功能",
     "fix": "修复",
