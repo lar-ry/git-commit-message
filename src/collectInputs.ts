@@ -155,7 +155,7 @@ export async function collectInputs() {
     if (Object.keys(config.customTypes)?.length) {
       items.push(
         {
-          label: l10n.t("Custom"),
+          label: l10n.t("Custom options"),
           kind: QuickPickItemKind.Separator,
           description: "",
           value: "",
@@ -165,6 +165,21 @@ export async function collectInputs() {
           value: label,
           description: config.customTypes[label],
         }))
+      );
+    }
+    if (state.type && !items.map((x) => x.value).includes(state.type)) {
+      items.push(
+        {
+          label: l10n.t("Custom input"),
+          kind: QuickPickItemKind.Separator,
+          description: "",
+          value: "",
+        },
+        {
+          label: `$(pencil) ${state.type}`,
+          description: l10n.t("Custom input"),
+          value: state.type,
+        }
       );
     }
     items.push(
