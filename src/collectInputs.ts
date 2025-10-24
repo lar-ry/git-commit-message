@@ -50,7 +50,7 @@ export async function collectInputs() {
 
   const config = workspace.getConfiguration("gitCommitMessage");
   let totalSteps = 6;
-  totalSteps += config.enableJira ? 1 : 0;
+  totalSteps += config.jira.enable ? 1 : 0;
   totalSteps += config.reporters.length ? 1 : 0;
   totalSteps += config.reviewers.length ? 1 : 0;
   const state = {} as Partial<State>;
@@ -62,16 +62,13 @@ export async function collectInputs() {
       config.template?.join?.("\n") ?? config.template,
       {
         type: state?.type ?? "",
-        jiraId: state?.jiraId ?? "",
         scope: state?.scope ?? "",
         summary: state?.summary ?? "",
         detail: state?.detail?.replaceAll(/&#92;n/g, "\n"),
         breakingChange: state?.breakingChange?.replaceAll(/&#92;n/g, "\n"),
         reporters: state?.reporters ?? [],
         reviewers: state?.reviewers ?? [],
-        enableJira: config.enableJira,
-        jiraPrefix: config.jiraPrefix,
-        jiraUrl: config.jiraUrl,
+        jira: { ...config.jira, id: state?.jiraId ?? "" },
         signer: config.signer,
         BREAKING_CHANGE: i18n[config.language].breakingChange,
         Reporter: i18n[config.language].reporter,
@@ -186,7 +183,7 @@ export async function collectInputs() {
   }
 
   async function inputJira(input: MultiStepInput, state: Partial<State>) {
-    if (config.enableJira) {
+    if (config.jira.enable) {
       state.jiraId = await input.showInputBox({
         step: 2,
         totalSteps,
@@ -205,7 +202,7 @@ export async function collectInputs() {
 
   async function inputScope(input: MultiStepInput, state: Partial<State>) {
     state.scope = await input.showInputBox({
-      step: 2 + (config.enableJira ? 1 : 0),
+      step: 2 + (config.jira.enable ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Scope")),
       prompt: l10n.t("Optional"),
@@ -221,7 +218,7 @@ export async function collectInputs() {
 
   async function inputSummary(input: MultiStepInput, state: Partial<State>) {
     state.summary = await input.showInputBox({
-      step: 3 + (config.enableJira ? 1 : 0),
+      step: 3 + (config.jira.enable ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Summary")),
       prompt: l10n.t("Required, no wrap"),
@@ -238,7 +235,7 @@ export async function collectInputs() {
 
   async function inputDetail(input: MultiStepInput, state: Partial<State>) {
     state.detail = await input.showInputBox({
-      step: 4 + (config.enableJira ? 1 : 0),
+      step: 4 + (config.jira.enable ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Detail")),
       prompt: l10n.t("Optional, you can use \\n to wrap"),
@@ -257,7 +254,7 @@ export async function collectInputs() {
     state: Partial<State>
   ) {
     state.breakingChange = await input.showInputBox({
-      step: 5 + (config.enableJira ? 1 : 0),
+      step: 5 + (config.jira.enable ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Breaking Change")),
       prompt: l10n.t("Optional, you can use \\n to wrap"),
@@ -274,7 +271,7 @@ export async function collectInputs() {
   async function pickReporters(input: MultiStepInput, state: Partial<State>) {
     if (config.reporters?.length) {
       state.reporters = (await input.showQuickPick({
-        step: 6 + (config.enableJira ? 1 : 0),
+        step: 6 + (config.jira.enable ? 1 : 0),
         totalSteps,
         title: l10n.t("Git Commit Message: {0}", l10n.t("Select Reporters")),
         placeholder: l10n.t("Select Reporters (multiple choice, optional)"),
@@ -301,7 +298,7 @@ export async function collectInputs() {
     if (config.reviewers?.length) {
       state.reviewers = (await input.showQuickPick({
         step:
-          6 + (config.enableJira ? 1 : 0) + (config.reporters.length ? 1 : 0),
+          6 + (config.jira.enable ? 1 : 0) + (config.reporters.length ? 1 : 0),
         totalSteps,
         title: l10n.t("Git Commit Message: {0}", l10n.t("Select Reviewers")),
         placeholder: l10n.t("Select Reviewers (multiple choice, optional)"),
@@ -329,7 +326,7 @@ export async function collectInputs() {
       state.done = (await input.showQuickPick({
         step:
           6 +
-          (config.enableJira ? 1 : 0) +
+          (config.jira.enable ? 1 : 0) +
           (config.reporters.length ? 1 : 0) +
           (config.reviewers.length ? 1 : 0),
         totalSteps,

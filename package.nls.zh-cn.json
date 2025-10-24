@@ -1,10 +1,10 @@
 {
     "customTypes": "自定义类型, 如: `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "描述",
-    "enableJira": "是否使用 Jira",
     "gitCommitMessage": "Git 提交说明",
-    "jiraPrefix": "Jira 项目前缀, 仅在 [Enable Jira](#gitCommitMessage.enableJira) 启用时有效, 如: PROJECT-",
-    "jiraUrl": "Jira URL, 仅在 [Enable Jira](#gitCommitMessage.enableJira) 启用时有效, 如: https://jira.sample.com/browse/",
+    "jira.enable": "Jira 使能",
+    "jira.prefix": "Jira 项目前缀, 仅在 [Jira: Enable](#gitCommitMessage.jira.enable) 启用时有效, 如: PROJECT-",
+    "jira.url": "Jira URL, 仅在 [Jira: Enable](#gitCommitMessage.jira.enable) 启用时有效, 如: https://jira.sample.com/browse/",
     "language": "提交说明语言",
     "name": "名称",
     "picked": "是否默认勾选",
