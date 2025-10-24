@@ -4,7 +4,7 @@
   "description": "auto git commit",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.104.0"
+    "vscode": "^1.103.0"
   },
   "categories": [
     "Other"
@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "git-commit.helloWorld",
-        "title": "Hello World"
+        "command": "larry.git-commit",
+        "title": "Git Commit"
       }
     ]
   },
