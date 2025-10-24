@@ -10,6 +10,8 @@ import {
   QuickInputButton,
   QuickInput,
   QuickInputButtons,
+  l10n,
+  QuickPickItemKind,
 } from "vscode";
 
 // -------------------------------------------------------
@@ -149,6 +151,24 @@ export class MultiStepInput {
               resolve(input.selectedItems[0]);
             }
             input.hide();
+          }),
+          input.onDidChangeValue((value) => {
+            if (!input.canSelectMany && value && value.trim() !== "") {
+              input.items = [
+                ...items,
+                {
+                  label: l10n.t("Custom input"),
+                  kind: QuickPickItemKind.Separator,
+                  description: "",
+                  value: "",
+                },
+                {
+                  label: `$(pencil) ${value}`,
+                  description: l10n.t("Custom input"),
+                  value,
+                },
+              ] as T[];
+            }
           }),
           input.onDidHide(() => {
             (async () => {

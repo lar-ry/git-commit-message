@@ -1,3 +1,13 @@
+![install](https://img.shields.io/badge/en-English-blue)
+![install](https://img.shields.io/badge/zh--cn-中文-red)
+![install](https://img.shields.io/visual-studio-marketplace/v/larry-lan.git-commit-message)
+
+<!-- ![install](https://img.shields.io/visual-studio-marketplace/release-date/larry-lan.git-commit-message) -->
+<!-- ![install](https://img.shields.io/visual-studio-marketplace/last-updated/larry-lan.git-commit-message) -->
+<!-- ![install](https://img.shields.io/visual-studio-marketplace/d/larry-lan.git-commit-message) -->
+<!-- ![install](https://img.shields.io/visual-studio-marketplace/i/larry-lan.git-commit-message) -->
+<!-- ![install](https://img.shields.io/visual-studio-marketplace/r/larry-lan.git-commit-message) -->
+
 # Git Commit Message - Git 提交说明
 
 Generate a fixed-format git commit message from a custom template
