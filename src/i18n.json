@@ -1,0 +1,36 @@
+{
+  "en": {
+    "breakingChange": "BREAKING_CHANGE",
+    "build": "build",
+    "docs": "docs",
+    "feat": "feat",
+    "fix": "fix",
+    "om": "om",
+    "perf": "perf",
+    "refactor": "refactor",
+    "release": "release",
+    "reporter": "Reported-by",
+    "revert": "revert",
+    "reviewer": "Reviewed-by",
+    "signer": "Signed-off-by",
+    "style": "style",
+    "test": "test"
+  },
+  "zh-cn": {
+    "breakingChange": "破坏性变更",
+    "build": "构建",
+    "docs": "文档",
+    "feat": "功能",
+    "fix": "修复",
+    "om": "运维",
+    "perf": "优化",
+    "refactor": "重构",
+    "release": "发布",
+    "reporter": "报告人",
+    "revert": "还原",
+    "reviewer": "审阅人",
+    "signer": "提交人",
+    "style": "样式",
+    "test": "测试"
+  }
+}
