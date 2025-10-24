@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -14,18 +14,19 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
+  "l10n": "./l10n",
   "contributes": {
     "commands": [
       {
-        "command": "LarryLan.gitCommitMessage",
-        "title": "Git Commit Message",
+        "command": "larry-lan.gitCommitMessage",
+        "title": "%larry-lan.gitCommitMessage.title%",
         "icon": "$(pencil)"
       }
     ],
     "menus": {
       "scm/title": [
         {
-          "command": "LarryLan.gitCommitMessage",
+          "command": "larry-lan.gitCommitMessage",
           "when": "scmProvider == git",
           "group": "navigation"
         }
@@ -36,7 +37,7 @@
       "properties": {
         "gitCommitMessage.language": {
           "type": "string",
-          "description": "提交信息语言",
+          "description": "%language%",
           "enum": [
             "zh-CN",
             "en-US"
@@ -49,36 +50,36 @@
         },
         "gitCommitMessage.enableJira": {
           "type": "boolean",
-          "description": "是否使用 Jira",
+          "description": "%enableJira%",
           "default": true
         },
         "gitCommitMessage.jiraUrl": {
           "type": "string",
-          "description": "Jira URL, 仅在 Enable Jira 启用时有效, 如: https://jira.sample.com/browse/",
+          "markdownDescription": "%jiraUrl%",
           "default": ""
         },
         "gitCommitMessage.jiraPrefix": {
           "type": "string",
-          "description": "Jira 项目前缀, 仅在 Enable Jira 启用时有效, 如: PROJECT-",
+          "markdownDescription": "%jiraPrefix%",
           "default": ""
         },
         "gitCommitMessage.reporters": {
           "type": "array",
-          "markdownDescription": "报告人列表\n- `name`: 报告人名字\n- `email`: 报告人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
+          "markdownDescription": "%reporters%",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "description": "报告人名字"
+                "description": "%reporters.name%"
               },
               "email": {
                 "type": "string",
-                "description": "报告人邮箱"
+                "description": "%reporters.email%"
               },
               "picked": {
                 "type": "boolean",
-                "description": "是否默认勾选"
+                "description": "%picked%"
               }
             },
             "required": [
@@ -90,21 +91,21 @@
         },
         "gitCommitMessage.reviewers": {
           "type": "array",
-          "markdownDescription": "审阅人列表\n- `name`: 审阅人名字\n- `email`: 审阅人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reviewer\", \"email\": \"reviewer@sample.com\", \"picked\": true }\n]\n```",
+          "markdownDescription": "%reviewers%",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "description": "审阅人名字"
+                "description": "%reviewers.name%"
               },
               "email": {
                 "type": "string",
-                "description": "审阅人邮箱"
+                "description": "%reviewers.name%"
               },
               "picked": {
                 "type": "boolean",
-                "description": "是否默认勾选"
+                "description": "%picked%"
               }
             },
             "required": [
@@ -116,12 +117,12 @@
         },
         "gitCommitMessage.signerName": {
           "type": "string",
-          "description": "提交人名字",
+          "description": "%signerName%",
           "default": ""
         },
         "gitCommitMessage.signerEmail": {
           "type": "string",
-          "description": "提交人邮箱",
+          "description": "%signerEmail%",
           "default": ""
         }
       }

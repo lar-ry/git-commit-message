@@ -1,0 +1,16 @@
+{
+    "enableJira": "Enable Jira",
+    "jiraPrefix": "Jira project prefix, only valid when `Enable Jira` is picked, e.g. PROJECT-",
+    "jiraUrl": "Jira URL, only valid when `Enable Jira` is picked, e.g. https://jira.sample.com/browse/",
+    "language": "Commit message language",
+    "larry-lan.gitCommitMessage.title": "Git Commit Message",
+    "picked": "Picked default",
+    "reporters": "Reporters\n- `name`: Reporters name\n- `email`: Reporters E-mail\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
+    "reporters.email": "Reporters E-mail",
+    "reporters.name": "Reporters name",
+    "reviewers": "Reviewers\n- `name`: Reviewers name\n- `email`: Reviewers E-mail\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reviewer\", \"email\": \"reviewer@sample.com\", \"picked\": true }\n]\n```",
+    "reviewers.email": "Reviewers E-mail",
+    "reviewers.name": "Reviewers name",
+    "signerEmail": "Signer E-mail",
+    "signerName": "Signer name"
+}

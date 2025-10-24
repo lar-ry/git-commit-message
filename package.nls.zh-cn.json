@@ -1,0 +1,16 @@
+{
+    "enableJira": "是否使用 Jira",
+    "jiraPrefix": "Jira 项目前缀, 仅在 `Enable Jira` 启用时有效, 如: PROJECT-",
+    "jiraUrl": "Jira URL, 仅在 `Enable Jira` 启用时有效, 如: https://jira.sample.com/browse/",
+    "language": "提交说明语言",
+    "larry-lan.gitCommitMessage.title": "Git 提交说明",
+    "picked": "是否默认勾选",
+    "reporters": "报告人列表\n- `name`: 报告人名字\n- `email`: 报告人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
+    "reporters.email": "报告人邮箱",
+    "reporters.name": "报告人名字",
+    "reviewers": "审阅人列表\n- `name`: 审阅人名字\n- `email`: 审阅人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reviewer\", \"email\": \"reviewer@sample.com\", \"picked\": true }\n]\n```",
+    "reviewers.email": "审阅人邮箱",
+    "reviewers.name": "审阅人名字",
+    "signerEmail": "提交人邮箱",
+    "signerName": "提交人名字"
+}
