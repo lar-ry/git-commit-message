@@ -17,7 +17,7 @@ perf[PROJECT-1234]scope: summary
 
 detail
 
-BREAKING_CHANGE: break change
+BREAKING_CHANGE: breaking change
 
 [PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
 
