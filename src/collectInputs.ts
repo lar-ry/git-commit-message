@@ -1,4 +1,11 @@
-import { workspace, extensions, window, QuickPickItem, l10n } from "vscode";
+import {
+  workspace,
+  extensions,
+  window,
+  QuickPickItem,
+  l10n,
+  QuickPickItemKind,
+} from "vscode";
 import { MultiStepInput } from "./multiStepInput";
 import { i18n } from "./i18n";
 
@@ -37,6 +44,7 @@ export async function collectInputs() {
 
   const {
     language,
+    customTypes,
     enableJira,
     jiraUrl,
     jiraPrefix,
@@ -118,20 +126,6 @@ export async function collectInputs() {
           description: l10n.t("(fix): Bug fixes"),
         },
         {
-          label: `$(book) ${l10n.t("docs")}`,
-          value: i18n[language].docs,
-          description: l10n.t(
-            "(docs): Modify only documentation files, without affecting code functionality"
-          ),
-        },
-        {
-          label: `$(bookmark) ${l10n.t("release")}`,
-          value: i18n[language].release,
-          description: l10n.t(
-            "(release): Modify only release files, such as version notes, without affecting code functionality"
-          ),
-        },
-        {
           label: `$(discard) ${l10n.t("revert")}`,
           value: i18n[language].revert,
           description: l10n.t(
@@ -151,6 +145,26 @@ export async function collectInputs() {
           ),
         },
         {
+          label: l10n.t("Without affecting code functionality"),
+          kind: QuickPickItemKind.Separator,
+          description: "",
+          value: "",
+        },
+        {
+          label: `$(book) ${l10n.t("docs")}`,
+          value: i18n[language].docs,
+          description: l10n.t(
+            "(docs): Modify only documentation files, without affecting code functionality"
+          ),
+        },
+        {
+          label: `$(bookmark) ${l10n.t("release")}`,
+          value: i18n[language].release,
+          description: l10n.t(
+            "(release): Modify only release files, such as version notes, without affecting code functionality"
+          ),
+        },
+        {
           label: `$(beaker) ${l10n.t("test")}`,
           value: i18n[language].test,
           description: l10n.t(
@@ -165,13 +179,24 @@ export async function collectInputs() {
           ),
         },
         {
-          label: `$(search) ${l10n.t("om")}`,
-          value: i18n[language].om,
+          label: `$(sync) ${l10n.t("ci")}`,
+          value: i18n[language].ci,
           description: l10n.t(
-            "(om): Modify only operation and maintenance files, such as continuous integration and continuous deployment, without affecting code functionality"
+            "Modify only CI configuration files, without affecting code functionality"
           ),
         },
-      ],
+        customTypes?.length && {
+          label: l10n.t("Custom"),
+          kind: QuickPickItemKind.Separator,
+          description: "",
+          value: "",
+        },
+        ...customTypes?.map((x: { name: string; description: string }) => ({
+          label: `$(git-commit) ${x.name}`,
+          value: x.name,
+          description: x.description,
+        })),
+      ]?.filter((x) => x),
     })) as QuickPickItemWithValue;
     updateGitCommitMessage(state);
     return (input: MultiStepInput) => inputJira(input, state);

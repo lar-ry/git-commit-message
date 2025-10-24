@@ -1,9 +1,12 @@
 {
+    "customTypes": "Custom Types",
+    "description": "Description",
     "enableJira": "Enable Jira",
     "jiraPrefix": "Jira project prefix, only valid when `Enable Jira` is picked, e.g. PROJECT-",
     "jiraUrl": "Jira URL, only valid when `Enable Jira` is picked, e.g. https://jira.sample.com/browse/",
     "language": "Commit message language",
     "larry-lan.gitCommitMessage.title": "Git Commit Message",
+    "name": "Name",
     "picked": "Picked default",
     "reporters": "Reporters\n- `name`: Reporters name\n- `email`: Reporters email\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
     "reporters.email": "Reporters email",

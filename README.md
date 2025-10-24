@@ -10,13 +10,13 @@ Run `Git Commit Message` from the command palette or click the pencil icon in th
 
 使用命令面板运行 `Git Commit Message` 或点击仓库更改消息输入框右上角的铅笔图标按键
 
-![Demo](assets/demo.gif)
+![Demo](https://github.com/lar-ry/git-commit-message/raw/HEAD/assets/demo.gif)
 
 The hover details of the commits in the Git graph are as follows. Clicking on the issue link will take you to the configured Jira issue details page
 
 Git 图形中提交的悬浮详细信息如下, 点击问题单链接可以跳转到配置的 Jira 问题详情页面
 
-![Detail](./assets/detail.png)
+![Detail](https://github.com/lar-ry/git-commit-message/raw/HEAD/assets/detail.png)
 
 ## Example in English
 
@@ -59,6 +59,12 @@ Signed-off-by: Signer <signer@sample.com>
 ```json
 {
   "gitCommitMessage.language": "en-US",
+  "gitCommitMessage.customTypes": [
+    {
+      "name": "customType",
+      "description": "(customType): description of the custom type"
+    }
+  ],
   "gitCommitMessage.enableJira": true,
   "gitCommitMessage.reporters": [
     { "name": "Reporter1", "email": "reporter1@sample.com", "picked": true },
