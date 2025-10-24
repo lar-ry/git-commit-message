@@ -188,7 +188,7 @@ export async function collectInputs() {
         totalSteps,
         title: l10n.t("Git Commit Message: {0}", "Jira ID"),
         prompt: l10n.t("Optional"),
-        placeholder: l10n.t("Fill in {0}", "Jira ID"),
+        placeholder: l10n.t("Fill in Jira ID"),
         ignoreFocusOut: true,
         value: state.jiraId || "",
         validate: async () => undefined,
