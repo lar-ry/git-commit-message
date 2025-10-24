@@ -1,11 +1,11 @@
 {
   "name": "git-commit-message",
   "displayName": "Git Commit Message",
-  "description": "Quickly edit git commit message using a fixed format",
+  "description": "Generate a fixed-format git commit message from a custom template",
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -42,17 +42,20 @@
           "type": "string",
           "description": "%language%",
           "enum": [
-            "zh-CN",
-            "en-US"
+            "en",
+            "zh-cn"
           ],
-          "enumDescriptions": [
-            "简体中文",
-            "English"
+          "enumItemLabels": [
+            "English",
+            "中文(简体)"
           ],
-          "default": "zh-CN"
+          "default": "en"
         },
         "gitCommitMessage.template": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "markdownDescription": "%template%",
           "default": [
             "{% if jira.id %}",

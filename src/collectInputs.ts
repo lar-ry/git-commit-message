@@ -37,7 +37,7 @@ export async function collectInputs() {
     });
   }
 
-  // Get the Git extension
+  // Get the git extension
   const gitExtension = extensions.getExtension("vscode.git")?.exports;
   if (!gitExtension) {
     return window.showErrorMessage(l10n.t("Git extension not activated"));
@@ -45,7 +45,7 @@ export async function collectInputs() {
   const git = gitExtension.getAPI(1);
   const repo = git.repositories[0];
   if (!repo) {
-    return window.showErrorMessage(l10n.t("No Git repository found"));
+    return window.showErrorMessage(l10n.t("No git repository found"));
   }
 
   const config = workspace.getConfiguration("gitCommitMessage");
@@ -87,35 +87,35 @@ export async function collectInputs() {
       {
         label: `$(rocket) ${l10n.t("perf")}`,
         value: i18n[config.language].perf,
-        description: l10n.t("(perf): Code or feature optimization, deletion"),
+        description: l10n.t("Code or feature optimization, deletion"),
       },
       {
         label: `$(sparkle) ${l10n.t("feat")}`,
         value: i18n[config.language].feat,
-        description: l10n.t("(feat): Support for new features"),
+        description: l10n.t("Support for new features"),
       },
       {
         label: `$(bug) ${l10n.t("fix")}`,
         value: i18n[config.language].fix,
-        description: l10n.t("(fix): Bug fixes"),
+        description: l10n.t("Bug fixes"),
       },
       {
         label: `$(discard) ${l10n.t("revert")}`,
         value: i18n[config.language].revert,
         description: l10n.t(
-          "(revert): Revert code, restore the previous version of the code"
+          "Revert code, restore the previous version of the code"
         ),
       },
       {
         label: `$(jersey) ${l10n.t("style")}`,
         value: i18n[config.language].style,
-        description: l10n.t("(style): Modify only style files"),
+        description: l10n.t("Modify only style files"),
       },
       {
         label: `$(lightbulb) ${l10n.t("refactor")}`,
         value: i18n[config.language].refactor,
         description: l10n.t(
-          "(refactor): Refactor code to fix issues, support new features, or optimize performance"
+          "Refactor code to fix issues, support new features, or optimize performance"
         ),
       },
       {
@@ -127,29 +127,34 @@ export async function collectInputs() {
       {
         label: `$(book) ${l10n.t("docs")}`,
         value: i18n[config.language].docs,
-        description: l10n.t("(docs): Modify only documentation files"),
+        description: l10n.t("Modify only documentation files"),
       },
       {
         label: `$(bookmark) ${l10n.t("release")}`,
         value: i18n[config.language].release,
-        description: l10n.t(
-          "(release): Modify only release files, such as version notes"
-        ),
+        description: l10n.t("Modify only release files, such as version notes"),
       },
       {
         label: `$(beaker) ${l10n.t("test")}`,
         value: i18n[config.language].test,
-        description: l10n.t("(test): Modify only test files"),
+        description: l10n.t("Modify only test files"),
       },
       {
         label: `$(play) ${l10n.t("build")}`,
         value: i18n[config.language].build,
-        description: l10n.t("(build): Modify only build files"),
+        description: l10n.t("Modify only build files"),
       },
       {
         label: `$(sync) ${l10n.t("ci")}`,
         value: i18n[config.language].ci,
-        description: l10n.t("Modify only CI configuration files"),
+        description: l10n.t(
+          "Modify only continuous integration configuration files"
+        ),
+      },
+      {
+        label: `$(circle-slash)`,
+        value: "",
+        description: l10n.t("Not selected"),
       },
     ];
     if (Object.keys(config.customTypes)?.length) {
@@ -339,7 +344,7 @@ export async function collectInputs() {
             label: `$(stop-circle) ${l10n.t("Check")}`,
             value: "Check",
             description: l10n.t(
-              "Please check the Git change message, you can go back to modify it, and select done after confirmation"
+              "Please check the git change message, you can go back to modify it, and select done after confirmation"
             ),
           },
           {
