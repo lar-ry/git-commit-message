@@ -1,5 +1,5 @@
 export const i18n: { [language: string]: any } = {
-  "zh-CN": {
+  "zh-cn": {
     perf: "优化",
     feat: "功能",
     fix: "修复",
@@ -16,7 +16,7 @@ export const i18n: { [language: string]: any } = {
     reviewer: "审阅人",
     signer: "提交人",
   },
-  "en-US": {
+  en: {
     perf: "perf",
     feat: "feat",
     fix: "fix",

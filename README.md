@@ -1,8 +1,8 @@
 # Git Commit Message - Git 提交说明
 
-Quickly edit git commit message using a custom format
+Generate a fixed-format git commit message from a custom template
 
-快速生成可自定义格式的 Git 提交说明
+由自定义模板生成固定格式的 git 提交说明
 
 ## Quick Start - 使用方法
 
@@ -12,7 +12,7 @@ Run `Git Commit Message` from the command palette or click the edit button in th
 
 ![Demo](https://github.com/lar-ry/git-commit-message/raw/HEAD/assets/demo.gif)
 
-The hover details of the commits in the Git graph are as follows. Clicking on the issue link will take you to the configured Jira issue details page
+The hover details of the commits in the git graph are as follows. Clicking on the issue link will take you to the configured Jira issue details page
 
 Git 图形中提交的悬浮详细信息如下, 点击问题单链接可以跳转到配置的 Jira 问题详情页面
 
@@ -74,9 +74,9 @@ Signed-off-by: Signer <signer@sample.com>
 
 ```json
 {
-  "gitCommitMessage.language": "en-US",
+  "gitCommitMessage.language": "en",
   "gitCommitMessage.customTypes": {
-    "customType": "(customType): custom type description"
+    "customType": "custom type description"
   },
   "gitCommitMessage.jira.enable": true,
   "gitCommitMessage.jira.prefix": "PROJECT-",

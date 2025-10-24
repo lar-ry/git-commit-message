@@ -3,8 +3,8 @@
     "description": "Description",
     "gitCommitMessage": "Git Commit Message",
     "jira.enable": "Jira enable",
-    "jira.prefix": "Jira project prefix, only valid when [Jira: Enable](#gitCommitMessage.jira.enable) is picked, e.g. PROJECT-",
-    "jira.url": "Jira URL, only valid when [Jira: Enable](#gitCommitMessage.jira.enable) is picked, e.g. https://jira.sample.com/browse/",
+    "jira.prefix": "Jira project prefix, only valid when `#gitCommitMessage.jira.enable#` is picked, e.g. PROJECT-",
+    "jira.url": "Jira URL, only valid when `#gitCommitMessage.jira.enable#` is picked, e.g. https://jira.sample.com/browse/",
     "language": "Commit message language",
     "name": "Name",
     "picked": "Picked default",
@@ -16,5 +16,5 @@
     "reviewers.name": "Reviewer's name",
     "signer.email": "Signer's email",
     "signer.name": "Signer's name",
-    "template": "Template\n\n[Read more about configuring profiles](https://github.com/lar-ry/git-commit-message/blob/master/README.md)"
+    "template": "Template [Read more about configuring profiles](https://github.com/lar-ry/git-commit-message/blob/master/README.md)"
 }

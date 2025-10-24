@@ -3,8 +3,8 @@
     "description": "描述",
     "gitCommitMessage": "Git 提交说明",
     "jira.enable": "Jira 使能",
-    "jira.prefix": "Jira 项目前缀, 仅在 [Jira: Enable](#gitCommitMessage.jira.enable) 启用时有效, 如: PROJECT-",
-    "jira.url": "Jira URL, 仅在 [Jira: Enable](#gitCommitMessage.jira.enable) 启用时有效, 如: https://jira.sample.com/browse/",
+    "jira.prefix": "Jira 项目前缀, 仅在 `#gitCommitMessage.jira.enable` 启用时有效, 如: PROJECT-",
+    "jira.url": "Jira URL, 仅在 `#gitCommitMessage.jira.enable` 启用时有效, 如: https://jira.sample.com/browse/",
     "language": "提交说明语言",
     "name": "名称",
     "picked": "是否默认勾选",
@@ -16,5 +16,5 @@
     "reviewers.name": "审阅人名字",
     "signer.email": "提交人邮箱",
     "signer.name": "提交人名字",
-    "template": "模板\n\n[详细了解如何对配置文件进行配置](https://github.com/lar-ry/git-commit-message/blob/master/README.md)"
+    "template": "模板 [详细了解如何对配置文件进行配置](https://github.com/lar-ry/git-commit-message/blob/master/README.md)"
 }
