@@ -1,5 +1,5 @@
 {
-    "customTypes": "自定义类型",
+    "customTypes": "自定义类型, 如: `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "描述",
     "enableJira": "是否使用 Jira",
     "jiraPrefix": "Jira 项目前缀, 仅在 `Enable Jira` 启用时有效, 如: PROJECT-",

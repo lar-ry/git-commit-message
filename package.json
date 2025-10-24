@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -52,22 +52,16 @@
           "default": "zh-CN"
         },
         "gitCommitMessage.customTypes": {
-          "type": "array",
-          "description": "%customTypes%",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "%name%"
-              },
-              "description": {
-                "type": "string",
-                "description": "%description%"
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
               }
-            }
+            ]
           },
-          "default": []
+          "markdownDescription": "%customTypes%"
         },
         "gitCommitMessage.enableJira": {
           "type": "boolean",
