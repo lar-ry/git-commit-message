@@ -33,7 +33,7 @@
 ### 英文
 
 ```
-perf[PROJECT-1234].range: summary
+perf[PROJECT-1234].scope: summary
 
 detail
 
