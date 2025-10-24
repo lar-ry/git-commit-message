@@ -1,12 +1,11 @@
-![install](https://img.shields.io/badge/en-English-blue)
-![install](https://img.shields.io/badge/zh--cn-中文-red)
-![install](https://img.shields.io/visual-studio-marketplace/v/larry-lan.git-commit-message)
-
-<!-- ![install](https://img.shields.io/visual-studio-marketplace/release-date/larry-lan.git-commit-message) -->
-<!-- ![install](https://img.shields.io/visual-studio-marketplace/last-updated/larry-lan.git-commit-message) -->
-<!-- ![install](https://img.shields.io/visual-studio-marketplace/d/larry-lan.git-commit-message) -->
-<!-- ![install](https://img.shields.io/visual-studio-marketplace/i/larry-lan.git-commit-message) -->
-<!-- ![install](https://img.shields.io/visual-studio-marketplace/r/larry-lan.git-commit-message) -->
+![English](https://badgen.net/badge/English/en)
+![中文](https://badgen.net/badge/中文/zh-cn/red)
+![License](https://badgen.net/badge/License/MIT)
+![VS Code](https://badgen.net/badge/VS%20Code/^v1.78.0)
+![version](https://badgen.net/vs-marketplace/v/larry-lan.git-commit-message)
+![installs](https://badgen.net/vs-marketplace/i/larry-lan.git-commit-message)
+![downloads](https://badgen.net/vs-marketplace/d/larry-lan.git-commit-message)
+![rating](https://badgen.net/vs-marketplace/rating/larry-lan.git-commit-message)
 
 # Git Commit Message - Git 提交说明
 
