@@ -1,5 +1,6 @@
 {
     "(build): Modify only build files, without affecting code functionality": "(build): 仅更改构建文件, 不影响代码功能",
+    "(ci): Modify only CI configuration files, without affecting code functionality": "(ci): 仅更改 CI 配置文件, 不影响代码功能",
     "(docs): Modify only documentation files, without affecting code functionality": "(docs): 仅更改文档文件, 不影响代码功能",
     "(feat): Support for new features": "(feat): 支持新的功能",
     "(fix): Bug fixes": "(fix): 问题修复",
@@ -13,6 +14,7 @@
     "Breaking Change": "破坏性变更",
     "build": "构建",
     "Check": "检查",
+    "Custom": "自定义",
     "Detail": "详情",
     "docs": "文档",
     "Done": "完成",
@@ -45,5 +47,6 @@
     "Selection done and then exit, goodbye": "选择完成即将退出, 再见",
     "style": "样式",
     "Summary": "摘要",
-    "test": "测试"
+    "test": "测试",
+    "Without affecting code functionality": "不影响代码功能"
 }
