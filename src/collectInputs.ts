@@ -112,7 +112,7 @@ export async function collectInputs() {
           description: l10n.t("(perf): Code or feature optimization, deletion"),
         },
         {
-          label: `$(add) ${l10n.t("feat")}`,
+          label: `$(sparkle) ${l10n.t("feat")}`,
           value: i18n[language].feat,
           description: l10n.t("(feat): Support for new features"),
         },
@@ -280,7 +280,7 @@ export async function collectInputs() {
         shouldResume: shouldResume,
         items: reporters?.map(
           (x: { name: string; email: string; picked: boolean }) => ({
-            label: x.name,
+            label: `$(report) ${x.name}`,
             value: `${x.name} <${x.email}>`,
             description: x.email,
             picked: x.picked,
@@ -305,7 +305,7 @@ export async function collectInputs() {
         shouldResume: shouldResume,
         items: reviewers?.map(
           (x: { name: string; email: string; picked: boolean }) => ({
-            label: x.name,
+            label: `$(code-review) ${x.name}`,
             value: `${x.name} <${x.email}>`,
             description: x.email,
             picked: x.picked,
