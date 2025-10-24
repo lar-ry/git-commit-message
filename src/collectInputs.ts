@@ -154,6 +154,11 @@ export async function collectInputs() {
           "Modify only continuous integration configuration files"
         ),
       },
+      {
+        label: `$(symbol-misc) ${l10n.t("chore")}`,
+        value: i18n.chore,
+        description: l10n.t("Modify only non-functional changes files"),
+      },
     ];
     if (Object.keys(config.customTypes)?.length) {
       items.push(
