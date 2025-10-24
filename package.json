@@ -3,9 +3,9 @@
   "displayName": "Git Commit Message",
   "description": "Quickly edit git commit message using a fixed format",
   "repository": "https://github.com/lar-ry/git-commit-message",
-  "publisher": "LarryLan",
+  "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "engines": {
     "vscode": "^1.104.0"
   },
