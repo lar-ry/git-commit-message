@@ -1,11 +1,11 @@
 {
   "name": "git-commit-message",
   "displayName": "Git Commit Message",
-  "description": "Edit git commit message quickly",
+  "description": "Quickly edit git commit message using a fixed format",
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "LarryLan",
   "icon": "assets/logo.png",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -17,21 +17,40 @@
   "contributes": {
     "commands": [
       {
-        "command": "larry.gitCommitMessage",
-        "title": "Git Commit Message"
+        "command": "LarryLan.gitCommitMessage",
+        "title": "Git Commit Message",
+        "icon": "$(pencil)"
       }
     ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "LarryLan.gitCommitMessage",
+          "when": "scmProvider == git",
+          "group": "navigation"
+        }
+      ]
+    },
     "configuration": {
       "title": "Git Commit Message",
       "properties": {
+        "gitCommitMessage.language": {
+          "type": "string",
+          "description": "提交信息语言",
+          "enum": [
+            "zh-CN",
+            "en-US"
+          ],
+          "default": "zh-CN"
+        },
         "gitCommitMessage.enableJira": {
           "type": "boolean",
-          "description": "使用 Jira",
+          "description": "是否使用 Jira",
           "default": true
         },
         "gitCommitMessage.jiraUrl": {
           "type": "string",
-          "description": "Jira URL, 如: https://jira.asterfusion.com/browse/",
+          "description": "Jira URL, 如: https://jira.sample.com/browse/",
           "default": ""
         },
         "gitCommitMessage.jiraPrefix": {
@@ -55,7 +74,7 @@
               },
               "picked": {
                 "type": "boolean",
-                "description": "默认勾选"
+                "description": "是否默认勾选"
               }
             },
             "required": [
@@ -81,7 +100,7 @@
               },
               "picked": {
                 "type": "boolean",
-                "description": "默认勾选"
+                "description": "是否默认勾选"
               }
             },
             "required": [
