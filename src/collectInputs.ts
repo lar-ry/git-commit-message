@@ -306,32 +306,34 @@ export async function collectInputs() {
   }
 
   async function pickFinnish(input: MultiStepInput, state: Partial<State>) {
-    state.finnish = (await input.showQuickPick({
-      step:
-        6 +
-        (enableJira ? 1 : 0) +
-        (reporters.length ? 1 : 0) +
-        (reviewers.length ? 1 : 0),
-      totalSteps,
-      title: "Git Commit Message: 完成",
-      placeholder: "选择完成",
-      ignoreFocusOut: true,
-      shouldResume: shouldResume,
-      items: [
-        {
-          label: "$(arrow-left) 上一步",
-          value: "上一步",
-          description: "检查一下, 确认后请选择完成",
-        },
-        {
-          label: "$(check) 完成",
-          value: "完成",
-          description: "选择完成即将退出, 再见",
-        },
-      ],
-    })) as QuickPickItemWithValue;
-    if (state.finnish?.value !== "完成") {
-      return input.back();
+    while (true) {
+      state.finnish = (await input.showQuickPick({
+        step:
+          6 +
+          (enableJira ? 1 : 0) +
+          (reporters.length ? 1 : 0) +
+          (reviewers.length ? 1 : 0),
+        totalSteps,
+        title: "Git Commit Message: 检查/完成",
+        placeholder: "选择检查/完成",
+        ignoreFocusOut: true,
+        shouldResume: shouldResume,
+        items: [
+          {
+            label: "$(stop-circle) 检查",
+            value: "检查",
+            description: "请检查 Git 变更消息, 可返回修改, 确认后请选择完成",
+          },
+          {
+            label: "$(pass) 完成",
+            value: "完成",
+            description: "选择完成即将退出, 再见",
+          },
+        ],
+      })) as QuickPickItemWithValue;
+      if (state.finnish?.value === "完成") {
+        break;
+      }
     }
   }
 }
