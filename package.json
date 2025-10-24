@@ -2,6 +2,8 @@
   "name": "git-commit-message",
   "displayName": "Git Commit Message",
   "description": "Edit git commit message quickly",
+  "repository": "https://github.com/lar-ry/git-commit-message",
+  "publisher": "LarryLan",
   "icon": "assets/logo.png",
   "version": "0.0.1",
   "engines": {
