@@ -1,9 +1,9 @@
-# Change Log
+## 发布日志
 
-All notable changes to the "gitCommitMessage" extension will be documented in this file.
+### 0.0.2
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- 提交文本框内容更新
 
-## [Unreleased]
+### 0.0.1
 
-- Initial release
+- 初始版本

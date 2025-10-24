@@ -7,9 +7,9 @@ import * as vscode from "vscode";
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log(
-    'Congratulations, your extension "gitCommitMessage" is now active!'
-  );
+  // console.log(
+  //   'Congratulations, your extension "gitCommitMessage" is now active!'
+  // );
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
@@ -34,6 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const {
+        enableJira,
         jiraUrl,
         jiraPrefix,
         reporters,
@@ -41,6 +42,9 @@ export function activate(context: vscode.ExtensionContext) {
         signerName,
         signerEmail,
       } = vscode.workspace.getConfiguration("gitCommitMessage");
+
+      const totalSteps = enableJira ? 8 : 7;
+      let step = 1;
       let commitMsg = "";
       // Step 1: 选择提交类型
       const type = await vscode.window.showQuickPick(
@@ -105,7 +109,7 @@ export function activate(context: vscode.ExtensionContext) {
           },
         ],
         {
-          title: "Git Commit Message: 选择提交类型 (1/8)",
+          title: `Git Commit Message: 选择提交类型 (${step++}/${totalSteps})`,
           placeHolder: "选择一个提交类型",
         }
       );
@@ -114,59 +118,66 @@ export function activate(context: vscode.ExtensionContext) {
         return; // 用户取消
       }
       commitMsg += type.value;
+      repo.inputBox.value = commitMsg;
 
       // Step 2: 输入Jira
-      const jiraId = await vscode.window.showInputBox({
-        title: "Git Commit Message: Jira ID (2/8)",
-        prompt: commitMsg,
-        placeHolder: "Jira ID (可留空)",
-      });
+      const jiraId = enableJira
+        ? await vscode.window.showInputBox({
+            title: `Git Commit Message: Jira ID (${step++}/${totalSteps})`,
+            prompt: "可不填",
+            placeHolder: "Jira ID",
+          })
+        : "";
       if (jiraId === undefined) {
         return; // 用户取消
       }
       commitMsg += jiraId ? `[${jiraPrefix}${jiraId}]` : "";
+      repo.inputBox.value = commitMsg;
       // Step 2: 输入范围
       const scope = await vscode.window.showInputBox({
-        title: "Git Commit Message: 范围 (3/8)",
-        prompt: commitMsg,
-        placeHolder: "范围 (可留空)",
+        title: `Git Commit Message: 范围 (${step++}/${totalSteps})`,
+        prompt: "可不填",
+        placeHolder: "范围",
       });
 
       if (scope === undefined) {
         return; // 用户取消
       }
-      commitMsg += scope ? scope : "";
+      commitMsg += scope ? `.${scope}` : "";
+      repo.inputBox.value = commitMsg;
 
-      // Step 3: 输入描述
-      const description = await vscode.window.showInputBox({
-        title: "Git Commit Message: 描述 (4/8)",
-        prompt: commitMsg,
-        placeHolder: "简短描述",
+      // Step 3: 输入摘要
+      const summary = await vscode.window.showInputBox({
+        title: `Git Commit Message: 摘要 (${step++}/${totalSteps})`,
+        prompt: "必填, 不可换行",
+        placeHolder: "摘要",
         validateInput: (text) =>
-          text.trim().length === 0 ? "描述不能为空" : undefined,
+          text.trim().length === 0 ? "摘要不能为空" : undefined,
       });
 
-      if (description === undefined) {
+      if (summary === undefined) {
         return; // 用户取消
       }
-      commitMsg += `: ${description}`;
+      commitMsg += `: ${summary}`;
+      repo.inputBox.value = commitMsg;
 
       // Step 3: 输入描述
       const detail = await vscode.window.showInputBox({
-        title: "Git Commit Message: 详情 (5/8)",
-        prompt: commitMsg,
-        placeHolder: "详情信息(\\n换行)",
+        title: `Git Commit Message: 详情 (${step++}/${totalSteps})`,
+        prompt: "可不填, 可使用\\n换行",
+        placeHolder: "详情信息",
       });
 
       if (detail === undefined) {
         return; // 用户取消
       }
       commitMsg += detail ? `\n\n${detail?.replaceAll("\\n", "\n")}` : "";
+      repo.inputBox.value = commitMsg;
       // Step 3: 输入描述
       const breakingChange = await vscode.window.showInputBox({
-        title: "Git Commit Message: 破坏性变更 (6/8)",
-        prompt: commitMsg,
-        placeHolder: "破坏性变更信息(\\n换行)",
+        title: `Git Commit Message: 破坏性变更 (${step++}/${totalSteps})`,
+        prompt: "可不填, 可使用\\n换行",
+        placeHolder: "破坏性变更信息",
       });
 
       if (breakingChange === undefined) {
@@ -176,9 +187,10 @@ export function activate(context: vscode.ExtensionContext) {
         ? `\n\n破坏性变更: ${breakingChange?.replaceAll("\\n", "\n")}`
         : "";
       commitMsg +=
-        jiraUrl && jiraId
+        enableJira && jiraUrl && jiraId
           ? `\n\n[${jiraPrefix}${jiraId}]: ${jiraUrl}${jiraPrefix}${jiraId}`
           : "";
+      repo.inputBox.value = commitMsg;
 
       // Step 1: 选择报告人
       const reportersOptions: {
@@ -195,8 +207,8 @@ export function activate(context: vscode.ExtensionContext) {
         })
       );
       const reporter = await vscode.window.showQuickPick(reportersOptions, {
-        title: "Git Commit Message: 选择报告人 (7/8)",
-        placeHolder: "选择报告人",
+        title: `Git Commit Message: 选择报告人 (${step++}/${totalSteps})`,
+        placeHolder: "选择报告人 (多选, 可不选)",
         canPickMany: true,
       });
 
@@ -206,6 +218,7 @@ export function activate(context: vscode.ExtensionContext) {
       commitMsg += reporter.length
         ? `\n${reporter.map((x) => `\n报告人: ${x.value}`).join("")}`
         : "";
+      repo.inputBox.value = commitMsg;
 
       // Step 1: 选择审阅人
       const reviewersOptions: {
@@ -222,8 +235,8 @@ export function activate(context: vscode.ExtensionContext) {
         })
       );
       const reviewer = await vscode.window.showQuickPick(reviewersOptions, {
-        title: "Git Commit Message: 选择审阅人 (8/8)",
-        placeHolder: "选择审阅人",
+        title: `Git Commit Message: 选择审阅人 (${step++}/${totalSteps})`,
+        placeHolder: "选择审阅人 (多选, 可不选)",
         canPickMany: true,
       });
 
@@ -240,7 +253,6 @@ export function activate(context: vscode.ExtensionContext) {
       commitMsg += signerName ? ` ${signerName}` : "";
       commitMsg += signerEmail ? ` <${signerEmail}>` : "";
 
-      // 填充到当前 Git 仓库的 commit message
       repo.inputBox.value = commitMsg;
     }
   );

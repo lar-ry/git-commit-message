@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "LarryLan",
   "icon": "assets/logo.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -24,6 +24,11 @@
     "configuration": {
       "title": "Git Commit Message",
       "properties": {
+        "gitCommitMessage.enableJira": {
+          "type": "boolean",
+          "description": "使用 Jira",
+          "default": true
+        },
         "gitCommitMessage.jiraUrl": {
           "type": "string",
           "description": "Jira URL, 如: https://jira.asterfusion.com/browse/",
@@ -31,7 +36,7 @@
         },
         "gitCommitMessage.jiraPrefix": {
           "type": "string",
-          "description": "Jira 项目前缀, 如: CXC-",
+          "description": "Jira 项目前缀, 如: PROJECT-",
           "default": ""
         },
         "gitCommitMessage.reporters": {
