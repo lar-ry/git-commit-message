@@ -95,6 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
         {
           title: `Git Commit Message: 选择类型 (${step++}/${totalSteps})`,
           placeHolder: "选择类型",
+          ignoreFocusOut: true,
         }
       );
 
@@ -110,6 +111,7 @@ export function activate(context: vscode.ExtensionContext) {
             title: `Git Commit Message: Jira ID (${step++}/${totalSteps})`,
             prompt: "可不填",
             placeHolder: "填写 Jira ID",
+            ignoreFocusOut: true,
           })
         : "";
       if (jiraId === undefined) {
@@ -122,6 +124,7 @@ export function activate(context: vscode.ExtensionContext) {
         title: `Git Commit Message: 范围 (${step++}/${totalSteps})`,
         prompt: "可不填",
         placeHolder: "填写范围",
+        ignoreFocusOut: true,
       });
 
       if (scope === undefined) {
@@ -135,6 +138,7 @@ export function activate(context: vscode.ExtensionContext) {
         title: `Git Commit Message: 摘要 (${step++}/${totalSteps})`,
         prompt: "必填, 不可换行",
         placeHolder: "填写摘要",
+        ignoreFocusOut: true,
         validateInput: (text) =>
           text.trim().length === 0 ? "摘要不能为空" : undefined,
       });
@@ -150,6 +154,7 @@ export function activate(context: vscode.ExtensionContext) {
         title: `Git Commit Message: 详情 (${step++}/${totalSteps})`,
         prompt: "可不填, 可使用\\n换行",
         placeHolder: "填写详情",
+        ignoreFocusOut: true,
       });
 
       if (detail === undefined) {
@@ -162,6 +167,7 @@ export function activate(context: vscode.ExtensionContext) {
         title: `Git Commit Message: 破坏性变更 (${step++}/${totalSteps})`,
         prompt: "可不填, 可使用\\n换行",
         placeHolder: "填写破坏性变更",
+        ignoreFocusOut: true,
       });
 
       if (breakingChange === undefined) {
@@ -194,6 +200,7 @@ export function activate(context: vscode.ExtensionContext) {
       const reporter = await vscode.window.showQuickPick(reportersOptions, {
         title: `Git Commit Message: 选择报告人 (${step++}/${totalSteps})`,
         placeHolder: "选择报告人 (多选, 可不选)",
+        ignoreFocusOut: true,
         canPickMany: true,
       });
 
@@ -224,6 +231,7 @@ export function activate(context: vscode.ExtensionContext) {
       const reviewer = await vscode.window.showQuickPick(reviewersOptions, {
         title: `Git Commit Message: 选择审阅人 (${step++}/${totalSteps})`,
         placeHolder: "选择审阅人 (多选, 可不选)",
+        ignoreFocusOut: true,
         canPickMany: true,
       });
 
