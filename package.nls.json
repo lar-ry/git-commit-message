@@ -5,12 +5,12 @@
     "language": "Commit message language",
     "larry-lan.gitCommitMessage.title": "Git Commit Message",
     "picked": "Picked default",
-    "reporters": "Reporters\n- `name`: Reporters name\n- `email`: Reporters E-mail\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
-    "reporters.email": "Reporters E-mail",
+    "reporters": "Reporters\n- `name`: Reporters name\n- `email`: Reporters email\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
+    "reporters.email": "Reporters email",
     "reporters.name": "Reporters name",
-    "reviewers": "Reviewers\n- `name`: Reviewers name\n- `email`: Reviewers E-mail\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reviewer\", \"email\": \"reviewer@sample.com\", \"picked\": true }\n]\n```",
-    "reviewers.email": "Reviewers E-mail",
+    "reviewers": "Reviewers\n- `name`: Reviewers name\n- `email`: Reviewers email\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reviewer\", \"email\": \"reviewer@sample.com\", \"picked\": true }\n]\n```",
+    "reviewers.email": "Reviewers email",
     "reviewers.name": "Reviewers name",
-    "signerEmail": "Signer E-mail",
+    "signerEmail": "Signer email",
     "signerName": "Signer name"
 }
