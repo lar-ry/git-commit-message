@@ -2,19 +2,11 @@
 
 Quickly edit git commit message using a fixed format
 
----
-
 快速生成固定格式的 Git 提交说明
 
 ## Usage - 使用方法
 
-Run `Git Commit Message` from the command palette
-
-or
-
-Click the pencil icon in the upper right corner of the repository changed message input box.
-
----
+Run `Git Commit Message` from the command palette or click the pencil icon in the upper right corner of the repository changed message input box.
 
 使用命令面板运行 `Git Commit Message` 或点击仓库更改消息输入框右上角的铅笔图标按键
 
