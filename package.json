@@ -2,9 +2,10 @@
   "name": "git-commit-message",
   "displayName": "Git Commit Message",
   "description": "Edit git commit message quickly",
+  "icon": "assets/logo.png",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.103.0"
+    "vscode": "^1.104.0"
   },
   "categories": [
     "Other"
