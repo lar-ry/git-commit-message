@@ -3,7 +3,7 @@ import { collectInputs } from "./collectInputs";
 
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
-    "LarryLan.gitCommitMessage",
+    "larry-lan.gitCommitMessage",
     collectInputs
   );
   context.subscriptions.push(disposable);

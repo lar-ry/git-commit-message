@@ -1,4 +1,4 @@
-import { workspace, extensions, window, QuickPickItem } from "vscode";
+import { workspace, extensions, window, QuickPickItem, l10n } from "vscode";
 import { MultiStepInput } from "./multiStepInput";
 import { i18n } from "./i18n";
 
@@ -14,7 +14,7 @@ export async function collectInputs() {
     breakingChange: string;
     reporterList: QuickPickItemWithValue[];
     reviewerList: QuickPickItemWithValue[];
-    finnish: QuickPickItemWithValue;
+    done: QuickPickItemWithValue;
   }
 
   function shouldResume() {
@@ -28,12 +28,12 @@ export async function collectInputs() {
     // 获取 Git 扩展
     const gitExtension = extensions.getExtension("vscode.git")?.exports;
     if (!gitExtension) {
-      return window.showErrorMessage("Git 扩展未激活");
+      return window.showErrorMessage(l10n.t("Git extension not activated"));
     }
     const git = gitExtension.getAPI(1);
     const repo = git.repositories[0];
     if (!repo) {
-      return window.showErrorMessage("没有找到 Git 仓库");
+      return window.showErrorMessage(l10n.t("No Git repository found"));
     }
     return repo;
   }
@@ -100,68 +100,80 @@ export async function collectInputs() {
     state.type = (await input.showQuickPick({
       step: 1,
       totalSteps,
-      title: "Git Commit Message: 选择类型",
-      placeholder: "选择类型",
+      title: l10n.t("Git Commit Message: {0}", l10n.t("Select Type")),
+      placeholder: l10n.t("Select Type (single choice, required)"),
       ignoreFocusOut: true,
       activeItem: state.type,
       shouldResume: shouldResume,
       items: [
         {
-          label: "$(rocket) 优化",
+          label: `$(rocket) ${l10n.t("perf")}`,
           value: i18n[language].perf,
-          description: "(perf): 代码或功能优化, 删减",
+          description: l10n.t("(perf): Code or feature optimization, deletion"),
         },
         {
-          label: "$(add) 功能",
+          label: `$(add) ${l10n.t("feat")}`,
           value: i18n[language].feat,
-          description: "(feat): 支持新的功能",
+          description: l10n.t("(feat): Support for new features"),
         },
         {
-          label: "$(bug) 修复",
+          label: `$(bug) ${l10n.t("fix")}`,
           value: i18n[language].fix,
-          description: "(fix): 问题修复",
+          description: l10n.t("(fix): Bug fixes"),
         },
         {
-          label: "$(book) 文档",
+          label: `$(book) ${l10n.t("docs")}`,
           value: i18n[language].docs,
-          description: "(docs): 仅更改文档文件, 不影响代码功能",
+          description: l10n.t(
+            "(docs): Modify only documentation files, without affecting code functionality"
+          ),
         },
         {
-          label: "$(bookmark) 发布",
+          label: `$(bookmark) ${l10n.t("release")}`,
           value: i18n[language].release,
-          description: "(release): 仅更改发布文件, 如版本说明, 不影响代码功能",
+          description: l10n.t(
+            "(release): Modify only release files, such as version notes, without affecting code functionality"
+          ),
         },
         {
-          label: "$(discard) 还原",
+          label: `$(discard) ${l10n.t("revert")}`,
           value: i18n[language].revert,
-          description: "(revert): 还原代码, 恢复之前版本的代码",
+          description: l10n.t(
+            "(revert): Revert code, restore the previous version of the code"
+          ),
         },
         {
-          label: "$(jersey) 样式",
+          label: `$(jersey) ${l10n.t("style")}`,
           value: i18n[language].style,
-          description: "(style): 仅更改样式文件",
+          description: l10n.t("(style): Modify only style files"),
         },
         {
-          label: "$(lightbulb) 重构",
+          label: `$(lightbulb) ${l10n.t("refactor")}`,
           value: i18n[language].refactor,
-          description:
-            "(refactor): 为修复问题或支持新功能或优化性能而进行代码重新构建",
+          description: l10n.t(
+            "(refactor): Rebuild code to fix issues, support new features, or optimize performance"
+          ),
         },
         {
-          label: "$(beaker) 测试",
+          label: `$(beaker) ${l10n.t("test")}`,
           value: i18n[language].test,
-          description: "(test): 仅更改测试文件, 不影响代码功能",
+          description: l10n.t(
+            "(test): Modify only test files, without affecting code functionality"
+          ),
         },
         {
-          label: "$(play) 构建",
+          label: `$(play) ${l10n.t("build")}`,
           value: i18n[language].build,
-          description: "(build): 仅更改构建文件, 不影响代码功能",
+          description: l10n.t(
+            "(build): Modify only build files, without affecting code functionality"
+          ),
         },
         {
-          label: "$(search) 运维",
+          label: `$(search) ${l10n.t("om")}`,
           value: i18n[language].om,
-          description:
-            "(om): 仅更改运维文件, 比如持续集成, 持续部署等, 不影响代码功能",
+          description: l10n.t(
+            "(om): Modify only operation and maintenance files, such as continuous integration and continuous deployment, without affecting code functionality"
+          ),
         },
       ],
     })) as QuickPickItemWithValue;
@@ -174,9 +186,9 @@ export async function collectInputs() {
       state.jiraId = await input.showInputBox({
         step: 2,
         totalSteps,
-        title: "Git Commit Message: Jira ID",
-        prompt: "可不填",
-        placeholder: "填写 Jira ID",
+        title: l10n.t("Git Commit Message: {0}", "Jira ID"),
+        prompt: l10n.t("Optional"),
+        placeholder: l10n.t("Fill in {0}", "Jira ID"),
         ignoreFocusOut: true,
         value: state.jiraId || "",
         validate: async () => undefined,
@@ -191,9 +203,9 @@ export async function collectInputs() {
     state.scope = await input.showInputBox({
       step: 2 + (enableJira ? 1 : 0),
       totalSteps,
-      title: "Git Commit Message: 范围",
-      prompt: "可不填",
-      placeholder: "填写范围",
+      title: l10n.t("Git Commit Message: {0}", l10n.t("Scope")),
+      prompt: l10n.t("Optional"),
+      placeholder: l10n.t("Fill in {0}", l10n.t("Scope")),
       ignoreFocusOut: true,
       value: state.scope || "",
       validate: async () => undefined,
@@ -207,13 +219,13 @@ export async function collectInputs() {
     state.summary = await input.showInputBox({
       step: 3 + (enableJira ? 1 : 0),
       totalSteps,
-      title: "Git Commit Message: 摘要",
-      prompt: "必填, 不可换行",
-      placeholder: "填写摘要",
+      title: l10n.t("Git Commit Message: {0}", l10n.t("Summary")),
+      prompt: l10n.t("Required, no wrap"),
+      placeholder: l10n.t("Fill in {0}", l10n.t("Summary")),
       ignoreFocusOut: true,
       value: state.summary || "",
       validate: async (text) =>
-        text.trim().length === 0 ? "摘要不能为空" : undefined,
+        text.trim().length === 0 ? l10n.t("Required") : undefined,
       shouldResume: shouldResume,
     });
     updateGitCommitMessage(state);
@@ -224,9 +236,9 @@ export async function collectInputs() {
     state.detail = await input.showInputBox({
       step: 4 + (enableJira ? 1 : 0),
       totalSteps,
-      title: "Git Commit Message: 详情",
-      prompt: "可不填, 可使用\\n换行",
-      placeholder: "填写详情",
+      title: l10n.t("Git Commit Message: {0}", l10n.t("Detail")),
+      prompt: l10n.t("Optional, you can use \\n to wrap"),
+      placeholder: l10n.t("Fill in {0}", l10n.t("Detail")),
       ignoreFocusOut: true,
       value: state.detail || "",
       validate: async () => undefined,
@@ -243,9 +255,9 @@ export async function collectInputs() {
     state.breakingChange = await input.showInputBox({
       step: 5 + (enableJira ? 1 : 0),
       totalSteps,
-      title: "Git Commit Message: 破坏性变更",
-      prompt: "可不填, 可使用\\n换行",
-      placeholder: "填写破坏性变更",
+      title: l10n.t("Git Commit Message: {0}", l10n.t("Breaking Change")),
+      prompt: l10n.t("Optional, you can use \\n to wrap"),
+      placeholder: l10n.t("Fill in {0}", l10n.t("Breaking Change")),
       ignoreFocusOut: true,
       value: state.breakingChange || "",
       validate: async () => undefined,
@@ -260,8 +272,8 @@ export async function collectInputs() {
       state.reporterList = (await input.showQuickPick({
         step: 6 + (enableJira ? 1 : 0),
         totalSteps,
-        title: "Git Commit Message: 选择报告人",
-        placeholder: "选择报告人 (多选, 可不选)",
+        title: l10n.t("Git Commit Message: {0}", l10n.t("Select Reporters")),
+        placeholder: l10n.t("Select Reporters (multiple choice, optional)"),
         ignoreFocusOut: true,
         canSelectMany: true,
         selectedItems: state.reporterList,
@@ -285,8 +297,8 @@ export async function collectInputs() {
       state.reviewerList = (await input.showQuickPick({
         step: 6 + (enableJira ? 1 : 0) + (reporters.length ? 1 : 0),
         totalSteps,
-        title: "Git Commit Message: 选择审阅人",
-        placeholder: "选择审阅人 (多选, 可不选)",
+        title: l10n.t("Git Commit Message: {0}", l10n.t("Select Reviewers")),
+        placeholder: l10n.t("Select Reviewers (multiple choice, optional)"),
         ignoreFocusOut: true,
         canSelectMany: true,
         selectedItems: state.reviewerList,
@@ -302,36 +314,38 @@ export async function collectInputs() {
       })) as QuickPickItemWithValue[];
       updateGitCommitMessage(state);
     }
-    return (input: MultiStepInput) => pickFinnish(input, state);
+    return (input: MultiStepInput) => pickDone(input, state);
   }
 
-  async function pickFinnish(input: MultiStepInput, state: Partial<State>) {
+  async function pickDone(input: MultiStepInput, state: Partial<State>) {
     while (true) {
-      state.finnish = (await input.showQuickPick({
+      state.done = (await input.showQuickPick({
         step:
           6 +
           (enableJira ? 1 : 0) +
           (reporters.length ? 1 : 0) +
           (reviewers.length ? 1 : 0),
         totalSteps,
-        title: "Git Commit Message: 检查/完成",
-        placeholder: "选择检查/完成",
+        title: l10n.t("Git Commit Message: {0}", l10n.t("Select Check / Done")),
+        placeholder: l10n.t("Select Check / Done"),
         ignoreFocusOut: true,
         shouldResume: shouldResume,
         items: [
           {
-            label: "$(stop-circle) 检查",
-            value: "检查",
-            description: "请检查 Git 变更消息, 可返回修改, 确认后请选择完成",
+            label: `$(stop-circle) ${l10n.t("Check")}`,
+            value: "Check",
+            description: l10n.t(
+              "Please check the Git change message, you can go back to modify it, and select done after confirmation"
+            ),
           },
           {
-            label: "$(pass) 完成",
-            value: "完成",
-            description: "选择完成即将退出, 再见",
+            label: `$(pass) ${l10n.t("Done")}`,
+            value: "Done",
+            description: l10n.t("Selection done and then exit, goodbye"),
           },
         ],
       })) as QuickPickItemWithValue;
-      if (state.finnish?.value === "完成") {
+      if (state.done?.value === "Done") {
         break;
       }
     }

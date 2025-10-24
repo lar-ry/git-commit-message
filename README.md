@@ -1,35 +1,17 @@
-# Git Commit Message
+# Git Commit Message - Git 提交说明
 
-这是一个 VS Code 扩展，用于快速生成固定格式的 Git 提交说明
+Quickly edit git commit message using a fixed format
+快速生成固定格式的 Git 提交说明
 
-## 功能
+## Usage - 使用方法
 
-- 快速生成固定格式的 Git 提交说明
+Run `Git Commit Message` from the command palette
+or
+Click the pencil icon in the upper right corner of the repository changed message input box.
 
-## 使用方法
+使用命令面板运行 `Git Commit Message` 或点击仓库更改消息输入框右上角的铅笔图标按键
 
-1. 安装扩展
-2. 使用命令面板运行 `Git Commit Message` 或点击提交文本框右上角的铅笔图标按键
-
-### 中文
-
-```
-优化[PROJECT-1234]范围: 摘要
-
-详情
-
-破坏性变更: 破坏性变更
-
-[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
-
-报告人: Reporter <reporter@sample.com>
-
-审阅人: Reviewer <reviewer@sample.com>
-
-提交人: Signer <signer@sample.com>
-```
-
-### 英文
+### Example in English
 
 ```
 perf[PROJECT-1234]scope: summary
@@ -47,7 +29,25 @@ Reviewed-by: Reviewer <reviewer@sample.com>
 Signed-off-by: Signer <signer@sample.com>
 ```
 
-## 设置
+### 中文示例
+
+```
+优化[PROJECT-1234]范围: 摘要
+
+详情
+
+破坏性变更: 破坏性变更
+
+[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
+
+报告人: Reporter <reporter@sample.com>
+
+审阅人: Reviewer <reviewer@sample.com>
+
+提交人: Signer <signer@sample.com>
+```
+
+## Setting - 设置
 
 ```json
 {
