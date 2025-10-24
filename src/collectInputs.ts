@@ -6,9 +6,11 @@ import {
   l10n,
   QuickPickItemKind,
 } from "vscode";
+import i18nJSON from "./i18n.json";
 import { MultiStepInput } from "./multiStepInput";
-import { i18n } from "./i18n";
 import { renderString } from "nunjucks";
+
+type I18N<T> = Record<string, T>;
 
 export async function collectInputs() {
   type QuickPickItemWithValue = QuickPickItem & {
@@ -54,6 +56,7 @@ export async function collectInputs() {
   totalSteps += config.reporters.length ? 1 : 0;
   totalSteps += config.reviewers.length ? 1 : 0;
   const state = {} as Partial<State>;
+  const i18n = (i18nJSON as I18N<Record<string, any>>)[config.language];
   await MultiStepInput.run((input) => pickType(input, state));
   return state as State;
 
@@ -64,56 +67,56 @@ export async function collectInputs() {
         type: state?.type ?? "",
         scope: state?.scope ?? "",
         summary: state?.summary ?? "",
-        detail: state?.detail?.replaceAll(/&#92;n/g, "\n"),
-        breakingChange: state?.breakingChange?.replaceAll(/&#92;n/g, "\n"),
+        detail: state?.detail?.replace(/&#92;n/g, "\n"),
+        breakingChange: state?.breakingChange?.replace(/&#92;n/g, "\n"),
         reporters: state?.reporters ?? [],
         reviewers: state?.reviewers ?? [],
         jira: { ...config.jira, id: state?.jiraId ?? "" },
         signer: config.signer,
-        BREAKING_CHANGE: i18n[config.language].breakingChange,
-        Reporter: i18n[config.language].reporter,
-        Reviewer: i18n[config.language].reviewer,
-        Signer: i18n[config.language].signer,
+        BREAKING_CHANGE: i18n.breakingChange,
+        Reporter: i18n.reporter,
+        Reviewer: i18n.reviewer,
+        Signer: i18n.signer,
       }
     )
-      ?.replaceAll(/^\n+/g, "")
-      ?.replaceAll(/&#92;n/g, "\n")
-      ?.replaceAll(/\n{3,}/g, "\n\n")
-      ?.replaceAll(/\n+$/g, "");
+      ?.replace(/^\n+/g, "")
+      ?.replace(/&#92;n/g, "\n")
+      ?.replace(/\n{3,}/g, "\n\n")
+      ?.replace(/\n+$/g, "");
   }
 
   async function pickType(input: MultiStepInput, state: Partial<State>) {
     const items: QuickPickItemWithValue[] = [
       {
         label: `$(rocket) ${l10n.t("perf")}`,
-        value: i18n[config.language].perf,
+        value: i18n.perf,
         description: l10n.t("Code or feature optimization, deletion"),
       },
       {
         label: `$(sparkle) ${l10n.t("feat")}`,
-        value: i18n[config.language].feat,
+        value: i18n.feat,
         description: l10n.t("Support for new features"),
       },
       {
         label: `$(bug) ${l10n.t("fix")}`,
-        value: i18n[config.language].fix,
+        value: i18n.fix,
         description: l10n.t("Bug fixes"),
       },
       {
         label: `$(discard) ${l10n.t("revert")}`,
-        value: i18n[config.language].revert,
+        value: i18n.revert,
         description: l10n.t(
           "Revert code, restore the previous version of the code"
         ),
       },
       {
         label: `$(jersey) ${l10n.t("style")}`,
-        value: i18n[config.language].style,
+        value: i18n.style,
         description: l10n.t("Modify only style files"),
       },
       {
         label: `$(lightbulb) ${l10n.t("refactor")}`,
-        value: i18n[config.language].refactor,
+        value: i18n.refactor,
         description: l10n.t(
           "Refactor code to fix issues, support new features, or optimize performance"
         ),
@@ -126,27 +129,27 @@ export async function collectInputs() {
       },
       {
         label: `$(book) ${l10n.t("docs")}`,
-        value: i18n[config.language].docs,
+        value: i18n.docs,
         description: l10n.t("Modify only documentation files"),
       },
       {
         label: `$(bookmark) ${l10n.t("release")}`,
-        value: i18n[config.language].release,
+        value: i18n.release,
         description: l10n.t("Modify only release files, such as version notes"),
       },
       {
         label: `$(beaker) ${l10n.t("test")}`,
-        value: i18n[config.language].test,
+        value: i18n.test,
         description: l10n.t("Modify only test files"),
       },
       {
         label: `$(play) ${l10n.t("build")}`,
-        value: i18n[config.language].build,
+        value: i18n.build,
         description: l10n.t("Modify only build files"),
       },
       {
         label: `$(sync) ${l10n.t("ci")}`,
-        value: i18n[config.language].ci,
+        value: i18n.ci,
         description: l10n.t(
           "Modify only continuous integration configuration files"
         ),
