@@ -2,10 +2,10 @@
     "customTypes": "自定义类型, 如: `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "描述",
     "enableJira": "是否使用 Jira",
-    "jiraPrefix": "Jira 项目前缀, 仅在 `Enable Jira` 启用时有效, 如: PROJECT-",
-    "jiraUrl": "Jira URL, 仅在 `Enable Jira` 启用时有效, 如: https://jira.sample.com/browse/",
+    "gitCommitMessage": "Git 提交说明",
+    "jiraPrefix": "Jira 项目前缀, 仅在 [Enable Jira](#gitCommitMessage.enableJira) 启用时有效, 如: PROJECT-",
+    "jiraUrl": "Jira URL, 仅在 [Enable Jira](#gitCommitMessage.enableJira) 启用时有效, 如: https://jira.sample.com/browse/",
     "language": "提交说明语言",
-    "larry-lan.gitCommitMessage.title": "Git 提交说明",
     "name": "名称",
     "picked": "是否默认勾选",
     "reporters": "报告人列表\n- `name`: 报告人名字\n- `email`: 报告人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
@@ -14,6 +14,7 @@
     "reviewers": "审阅人列表\n- `name`: 审阅人名字\n- `email`: 审阅人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reviewer\", \"email\": \"reviewer@sample.com\", \"picked\": true }\n]\n```",
     "reviewers.email": "审阅人邮箱",
     "reviewers.name": "审阅人名字",
-    "signerEmail": "提交人邮箱",
-    "signerName": "提交人名字"
+    "signer.email": "提交人邮箱",
+    "signer.name": "提交人名字",
+    "template": "模板\n\n[详细了解如何对配置文件进行配置](https://github.com/lar-ry/git-commit-message/blob/master/README.md)"
 }

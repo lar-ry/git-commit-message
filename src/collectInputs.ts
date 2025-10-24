@@ -8,19 +8,25 @@ import {
 } from "vscode";
 import { MultiStepInput } from "./multiStepInput";
 import { i18n } from "./i18n";
+import { renderString } from "nunjucks";
 
 export async function collectInputs() {
-  type QuickPickItemWithValue = QuickPickItem & { value: string };
+  type QuickPickItemWithValue = QuickPickItem & {
+    value: string;
+    name?: string;
+    email?: string;
+  };
 
   interface State {
-    type: QuickPickItemWithValue;
+    type: string;
+    typeItem: QuickPickItemWithValue;
     jiraId: string;
     scope: string;
     summary: string;
     detail: string;
     breakingChange: string;
-    reporterList: QuickPickItemWithValue[];
-    reviewerList: QuickPickItemWithValue[];
+    reporters: QuickPickItemWithValue[];
+    reviewers: QuickPickItemWithValue[];
     done: QuickPickItemWithValue;
   }
 
@@ -42,96 +48,75 @@ export async function collectInputs() {
     return window.showErrorMessage(l10n.t("No Git repository found"));
   }
 
-  const {
-    language,
-    customTypes,
-    enableJira,
-    jiraUrl,
-    jiraPrefix,
-    reporters,
-    reviewers,
-    signerName,
-    signerEmail,
-  } = workspace.getConfiguration("gitCommitMessage");
+  const config = workspace.getConfiguration("gitCommitMessage");
   let totalSteps = 6;
-  totalSteps += enableJira ? 1 : 0;
-  totalSteps += reporters.length ? 1 : 0;
-  totalSteps += reviewers.length ? 1 : 0;
+  totalSteps += config.enableJira ? 1 : 0;
+  totalSteps += config.reporters.length ? 1 : 0;
+  totalSteps += config.reviewers.length ? 1 : 0;
   const state = {} as Partial<State>;
   await MultiStepInput.run((input) => pickType(input, state));
   return state as State;
 
   function updateGitCommitMessage(state: Partial<State>) {
-    const {
-      type,
-      jiraId = "",
-      scope = "",
-      summary = "",
-      detail = "",
-      breakingChange = "",
-      reporterList = [],
-      reviewerList = [],
-    } = state;
-    repo.inputBox.value =
-      (type?.value ?? "") +
-      (jiraId ? `[${jiraPrefix}${jiraId}]` : "") +
-      (scope ? `${jiraId ? "" : "."}${scope}` : "") +
-      `: ${summary}` +
-      (detail ? `\n\n${detail?.replaceAll("\\n", "\n")}` : "") +
-      (breakingChange
-        ? `\n\n${i18n[language].breakingChange}: ` +
-          breakingChange?.replaceAll("\\n", "\n")
-        : "") +
-      (enableJira && jiraUrl && jiraId
-        ? `\n\n[${jiraPrefix}${jiraId}]: ${jiraUrl}${jiraPrefix}${jiraId}`
-        : "") +
-      (reporterList?.length
-        ? `\n\n${reporterList
-            .map((x: any) => `${i18n[language].reporter}: ${x.value}`)
-            .join("\n")}`
-        : "") +
-      (reviewerList?.length
-        ? `\n\n${reviewerList
-            .map((x: any) => `${i18n[language].reviewer}: ${x.value}`)
-            .join("\n")}`
-        : "") +
-      (signerName || signerEmail ? `\n\n${i18n[language].signer}:` : "") +
-      (signerName ? ` ${signerName}` : "") +
-      (signerEmail ? ` <${signerEmail}>` : "");
+    repo.inputBox.value = renderString(
+      config.template?.join?.("\n") ?? config.template,
+      {
+        type: state?.type ?? "",
+        jiraId: state?.jiraId ?? "",
+        scope: state?.scope ?? "",
+        summary: state?.summary ?? "",
+        detail: state?.detail?.replaceAll(/&#92;n/g, "\n"),
+        breakingChange: state?.breakingChange?.replaceAll(/&#92;n/g, "\n"),
+        reporters: state?.reporters ?? [],
+        reviewers: state?.reviewers ?? [],
+        enableJira: config.enableJira,
+        jiraPrefix: config.jiraPrefix,
+        jiraUrl: config.jiraUrl,
+        signer: config.signer,
+        BREAKING_CHANGE: i18n[config.language].breakingChange,
+        Reporter: i18n[config.language].reporter,
+        Reviewer: i18n[config.language].reviewer,
+        Signer: i18n[config.language].signer,
+      }
+    )
+      ?.replaceAll(/^\n+/g, "")
+      ?.replaceAll(/&#92;n/g, "\n")
+      ?.replaceAll(/\n{3,}/g, "\n\n")
+      ?.replaceAll(/\n+$/g, "");
   }
 
   async function pickType(input: MultiStepInput, state: Partial<State>) {
     const items: QuickPickItemWithValue[] = [
       {
         label: `$(rocket) ${l10n.t("perf")}`,
-        value: i18n[language].perf,
+        value: i18n[config.language].perf,
         description: l10n.t("(perf): Code or feature optimization, deletion"),
       },
       {
         label: `$(sparkle) ${l10n.t("feat")}`,
-        value: i18n[language].feat,
+        value: i18n[config.language].feat,
         description: l10n.t("(feat): Support for new features"),
       },
       {
         label: `$(bug) ${l10n.t("fix")}`,
-        value: i18n[language].fix,
+        value: i18n[config.language].fix,
         description: l10n.t("(fix): Bug fixes"),
       },
       {
         label: `$(discard) ${l10n.t("revert")}`,
-        value: i18n[language].revert,
+        value: i18n[config.language].revert,
         description: l10n.t(
           "(revert): Revert code, restore the previous version of the code"
         ),
       },
       {
         label: `$(jersey) ${l10n.t("style")}`,
-        value: i18n[language].style,
+        value: i18n[config.language].style,
         description: l10n.t("(style): Modify only style files"),
       },
       {
         label: `$(lightbulb) ${l10n.t("refactor")}`,
-        value: i18n[language].refactor,
+        value: i18n[config.language].refactor,
         description: l10n.t(
           "(refactor): Refactor code to fix issues, support new features, or optimize performance"
         ),
@@ -144,33 +129,33 @@ export async function collectInputs() {
       },
       {
         label: `$(book) ${l10n.t("docs")}`,
-        value: i18n[language].docs,
+        value: i18n[config.language].docs,
         description: l10n.t("(docs): Modify only documentation files"),
       },
       {
         label: `$(bookmark) ${l10n.t("release")}`,
-        value: i18n[language].release,
+        value: i18n[config.language].release,
         description: l10n.t(
           "(release): Modify only release files, such as version notes"
         ),
       },
       {
         label: `$(beaker) ${l10n.t("test")}`,
-        value: i18n[language].test,
+        value: i18n[config.language].test,
         description: l10n.t("(test): Modify only test files"),
       },
       {
         label: `$(play) ${l10n.t("build")}`,
-        value: i18n[language].build,
+        value: i18n[config.language].build,
         description: l10n.t("(build): Modify only build files"),
       },
       {
         label: `$(sync) ${l10n.t("ci")}`,
-        value: i18n[language].ci,
+        value: i18n[config.language].ci,
         description: l10n.t("Modify only CI configuration files"),
       },
     ];
-    if (Object.keys(customTypes)?.length) {
+    if (Object.keys(config.customTypes)?.length) {
       items.push(
         {
           label: l10n.t("Custom"),
@@ -178,29 +163,30 @@ export async function collectInputs() {
           description: "",
           value: "",
         },
-        ...Object.keys(customTypes)?.map((label) => ({
+        ...Object.keys(config.customTypes)?.map((label) => ({
           label,
           value: label,
-          description: customTypes[label],
+          description: config.customTypes[label],
         }))
       );
     }
-    state.type = (await input.showQuickPick({
+    state.typeItem = (await input.showQuickPick({
       step: 1,
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Select Type")),
       placeholder: l10n.t("Select Type (single choice, required)"),
       ignoreFocusOut: true,
-      activeItem: state.type,
+      activeItem: state.typeItem,
       shouldResume: shouldResume,
       items,
     })) as QuickPickItemWithValue;
+    state.type = state.typeItem?.value ?? "";
     updateGitCommitMessage(state);
     return (input: MultiStepInput) => inputJira(input, state);
   }
 
   async function inputJira(input: MultiStepInput, state: Partial<State>) {
-    if (enableJira) {
+    if (config.enableJira) {
       state.jiraId = await input.showInputBox({
         step: 2,
         totalSteps,
@@ -219,7 +205,7 @@ export async function collectInputs() {
 
   async function inputScope(input: MultiStepInput, state: Partial<State>) {
     state.scope = await input.showInputBox({
-      step: 2 + (enableJira ? 1 : 0),
+      step: 2 + (config.enableJira ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Scope")),
       prompt: l10n.t("Optional"),
@@ -235,7 +221,7 @@ export async function collectInputs() {
 
   async function inputSummary(input: MultiStepInput, state: Partial<State>) {
     state.summary = await input.showInputBox({
-      step: 3 + (enableJira ? 1 : 0),
+      step: 3 + (config.enableJira ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Summary")),
       prompt: l10n.t("Required, no wrap"),
@@ -252,7 +238,7 @@ export async function collectInputs() {
 
   async function inputDetail(input: MultiStepInput, state: Partial<State>) {
     state.detail = await input.showInputBox({
-      step: 4 + (enableJira ? 1 : 0),
+      step: 4 + (config.enableJira ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Detail")),
       prompt: l10n.t("Optional, you can use \\n to wrap"),
@@ -271,7 +257,7 @@ export async function collectInputs() {
     state: Partial<State>
   ) {
     state.breakingChange = await input.showInputBox({
-      step: 5 + (enableJira ? 1 : 0),
+      step: 5 + (config.enableJira ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Breaking Change")),
       prompt: l10n.t("Optional, you can use \\n to wrap"),
@@ -286,22 +272,23 @@ export async function collectInputs() {
   }
 
   async function pickReporters(input: MultiStepInput, state: Partial<State>) {
-    if (reporters?.length) {
-      state.reporterList = (await input.showQuickPick({
-        step: 6 + (enableJira ? 1 : 0),
+    if (config.reporters?.length) {
+      state.reporters = (await input.showQuickPick({
+        step: 6 + (config.enableJira ? 1 : 0),
         totalSteps,
         title: l10n.t("Git Commit Message: {0}", l10n.t("Select Reporters")),
         placeholder: l10n.t("Select Reporters (multiple choice, optional)"),
         ignoreFocusOut: true,
         canSelectMany: true,
-        selectedItems: state.reporterList,
+        selectedItems: state.reporters,
         shouldResume: shouldResume,
-        items: reporters?.map(
+        items: config.reporters?.map(
           (x: { name: string; email: string; picked: boolean }) => ({
             label: `$(report) ${x.name}`,
-            value: `${x.name} <${x.email}>`,
             description: x.email,
             picked: x.picked,
+            name: x.name,
+            email: x.email,
           })
         ),
       })) as QuickPickItemWithValue[];
@@ -311,22 +298,24 @@ export async function collectInputs() {
   }
 
   async function pickReviewers(input: MultiStepInput, state: Partial<State>) {
-    if (reviewers?.length) {
-      state.reviewerList = (await input.showQuickPick({
-        step: 6 + (enableJira ? 1 : 0) + (reporters.length ? 1 : 0),
+    if (config.reviewers?.length) {
+      state.reviewers = (await input.showQuickPick({
+        step:
+          6 + (config.enableJira ? 1 : 0) + (config.reporters.length ? 1 : 0),
         totalSteps,
         title: l10n.t("Git Commit Message: {0}", l10n.t("Select Reviewers")),
         placeholder: l10n.t("Select Reviewers (multiple choice, optional)"),
         ignoreFocusOut: true,
         canSelectMany: true,
-        selectedItems: state.reviewerList,
+        selectedItems: state.reviewers,
         shouldResume: shouldResume,
-        items: reviewers?.map(
+        items: config.reviewers?.map(
           (x: { name: string; email: string; picked: boolean }) => ({
             label: `$(code-review) ${x.name}`,
-            value: `${x.name} <${x.email}>`,
             description: x.email,
             picked: x.picked,
+            name: x.name,
+            email: x.email,
           })
         ),
       })) as QuickPickItemWithValue[];
@@ -340,9 +329,9 @@ export async function collectInputs() {
       state.done = (await input.showQuickPick({
         step:
           6 +
-          (enableJira ? 1 : 0) +
-          (reporters.length ? 1 : 0) +
-          (reviewers.length ? 1 : 0),
+          (config.enableJira ? 1 : 0) +
+          (config.reporters.length ? 1 : 0) +
+          (config.reviewers.length ? 1 : 0),
         totalSteps,
         title: l10n.t("Git Commit Message: {0}", l10n.t("Select Check / Done")),
         placeholder: l10n.t("Select Check / Done"),

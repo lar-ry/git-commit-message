@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -22,7 +22,7 @@
     "commands": [
       {
         "command": "larry-lan.gitCommitMessage",
-        "title": "%larry-lan.gitCommitMessage.title%",
+        "title": "%gitCommitMessage%",
         "icon": "$(pencil)"
       }
     ],
@@ -50,6 +50,43 @@
             "English"
           ],
           "default": "zh-CN"
+        },
+        "gitCommitMessage.template": {
+          "type": "array",
+          "markdownDescription": "%template%",
+          "default": [
+            "{% if jiraId %}",
+            "{{ type }}[{{ jiraPrefix }}{{ jiraId }}]{{ scope }}: {{ summary }}",
+            "{% elif type and scope %}",
+            "{{ type }}.{{ scope }}: {{ summary }}",
+            "{% elif type or scope %}",
+            "{{ type }}{{ scope }}: {{ summary }}",
+            "{% else %}",
+            "{{ summary }}",
+            "{% endif %}",
+            "",
+            "{{ detail }}",
+            "",
+            "{% if breakingChange %}",
+            "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
+            "{% endif %}",
+            "",
+            "{% if enableJira and jiraUrl and jiraId %}",
+            "[{{ jiraPrefix }}{{ jiraId }}]: {{ jiraUrl }}{{ jiraPrefix }}{{ jiraId }}",
+            "{% endif %}",
+            "",
+            "{% for reporter in reporters -%}",
+            "{{ Reporter }}: {{ reporter.name }} <{{ reporter.email }}>",
+            "{% endfor %}",
+            "",
+            "{% for reviewer in reviewers -%}",
+            "{{ Reviewer }}: {{ reviewer.name }} <{{ reviewer.email }}>",
+            "{% endfor %}",
+            "",
+            "{% if signer.name or signer.email %}",
+            "{{ Signer }}: {{ signer.name }} <{{ signer.email }}>",
+            "{% endif %}"
+          ]
         },
         "gitCommitMessage.customTypes": {
           "type": "object",
@@ -130,14 +167,14 @@
           },
           "default": []
         },
-        "gitCommitMessage.signerName": {
+        "gitCommitMessage.signer.name": {
           "type": "string",
-          "description": "%signerName%",
+          "description": "%signer.name%",
           "default": ""
         },
-        "gitCommitMessage.signerEmail": {
+        "gitCommitMessage.signer.email": {
           "type": "string",
-          "description": "%signerEmail%",
+          "description": "%signer.email%",
           "default": ""
         }
       }
@@ -152,14 +189,18 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.78.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
+    "@types/nunjucks": "^3.2.6",
+    "@types/vscode": "^1.78.0",
     "@typescript-eslint/eslint-plugin": "^8.42.0",
     "@typescript-eslint/parser": "^8.42.0",
-    "eslint": "^9.34.0",
-    "typescript": "^5.9.2",
     "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.34.0",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "nunjucks": "^3.2.4"
   }
 }
