@@ -151,11 +151,6 @@ export async function collectInputs() {
           "Modify only continuous integration configuration files"
         ),
       },
-      {
-        label: `$(circle-slash)`,
-        value: "",
-        description: l10n.t("Not selected"),
-      },
     ];
     if (Object.keys(config.customTypes)?.length) {
       items.push(
@@ -172,6 +167,19 @@ export async function collectInputs() {
         }))
       );
     }
+    items.push(
+      {
+        label: l10n.t("Not selected"),
+        kind: QuickPickItemKind.Separator,
+        description: "",
+        value: "",
+      },
+      {
+        label: `$(circle-slash)`,
+        value: "",
+        description: l10n.t("Not selected"),
+      }
+    );
     state.typeItem = (await input.showQuickPick({
       step: 1,
       totalSteps,
