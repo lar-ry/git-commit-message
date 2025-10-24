@@ -56,12 +56,6 @@ export class MultiStepInput {
     const input = new MultiStepInput();
     return input.stepThrough(start);
   }
-
-  back(): InputStep | void {
-    this.steps.pop();
-    return this.steps.pop();
-  }
-
   private current?: QuickInput;
   private steps: InputStep[] = [];
 
@@ -219,7 +213,10 @@ export class MultiStepInput {
             const value = input.value;
             input.enabled = false;
             input.busy = true;
-            if (!(await validate(value))) {
+            const validationMessage = await validate(value);
+            if (validationMessage) {
+              input.validationMessage = validationMessage;
+            } else {
               resolve(value);
             }
             input.enabled = true;
