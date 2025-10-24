@@ -1,7 +1,7 @@
 {
-  "name": "git-commit",
-  "displayName": "git commit",
-  "description": "auto git commit",
+  "name": "git-commit-message",
+  "displayName": "Git Commit Message",
+  "description": "Edit git commit message quickly",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.103.0"
@@ -14,10 +14,87 @@
   "contributes": {
     "commands": [
       {
-        "command": "larry.git-commit",
-        "title": "Git Commit"
+        "command": "larry.gitCommitMessage",
+        "title": "Git Commit Message"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Git Commit Message",
+      "properties": {
+        "gitCommitMessage.jiraUrl": {
+          "type": "string",
+          "description": "Jira URL, 如: https://jira.asterfusion.com/browse/",
+          "default": ""
+        },
+        "gitCommitMessage.jiraPrefix": {
+          "type": "string",
+          "description": "Jira 项目前缀, 如: CXC-",
+          "default": ""
+        },
+        "gitCommitMessage.reporters": {
+          "type": "array",
+          "description": "报告人列表（名字 + 邮箱）",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "报告人名字"
+              },
+              "email": {
+                "type": "string",
+                "description": "报告人邮箱"
+              },
+              "picked": {
+                "type": "boolean",
+                "description": "默认勾选"
+              }
+            },
+            "required": [
+              "name",
+              "email"
+            ]
+          },
+          "default": []
+        },
+        "gitCommitMessage.reviewers": {
+          "type": "array",
+          "description": "审阅人列表（名字 + 邮箱）",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "审阅人名字"
+              },
+              "email": {
+                "type": "string",
+                "description": "审阅人邮箱"
+              },
+              "picked": {
+                "type": "boolean",
+                "description": "默认勾选"
+              }
+            },
+            "required": [
+              "name",
+              "email"
+            ]
+          },
+          "default": []
+        },
+        "gitCommitMessage.signerName": {
+          "type": "string",
+          "description": "提交人名字",
+          "default": ""
+        },
+        "gitCommitMessage.signerEmail": {
+          "type": "string",
+          "description": "提交人邮箱",
+          "default": ""
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
