@@ -9,13 +9,12 @@
 ## 使用方法
 
 1. 安装扩展
-2. 打开 VS Code
-3. 按照提示或使用命令面板运行扩展 `Git Commit Message`
+2. 使用命令面板运行 `Git Commit Message` 或点击提交文本框右上角的铅笔图标按键
 
 ### 中文
 
 ```
-优化[PROJECT-1234].范围: 摘要
+优化[PROJECT-1234]范围: 摘要
 
 详情
 
@@ -33,7 +32,7 @@
 ### 英文
 
 ```
-perf[PROJECT-1234].scope: summary
+perf[PROJECT-1234]scope: summary
 
 detail
 
