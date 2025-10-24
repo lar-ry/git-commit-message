@@ -59,12 +59,9 @@ Signed-off-by: Signer <signer@sample.com>
 ```json
 {
   "gitCommitMessage.language": "en-US",
-  "gitCommitMessage.customTypes": [
-    {
-      "name": "customType",
-      "description": "(customType): description of the custom type"
-    }
-  ],
+  "gitCommitMessage.customTypes": {
+    "customType": "(customType): custom type description"
+  },
   "gitCommitMessage.enableJira": true,
   "gitCommitMessage.reporters": [
     { "name": "Reporter1", "email": "reporter1@sample.com", "picked": true },

@@ -101,6 +101,90 @@ export async function collectInputs() {
   }
 
   async function pickType(input: MultiStepInput, state: Partial<State>) {
+    const items: QuickPickItemWithValue[] = [
+      {
+        label: `$(rocket) ${l10n.t("perf")}`,
+        value: i18n[language].perf,
+        description: l10n.t("(perf): Code or feature optimization, deletion"),
+      },
+      {
+        label: `$(sparkle) ${l10n.t("feat")}`,
+        value: i18n[language].feat,
+        description: l10n.t("(feat): Support for new features"),
+      },
+      {
+        label: `$(bug) ${l10n.t("fix")}`,
+        value: i18n[language].fix,
+        description: l10n.t("(fix): Bug fixes"),
+      },
+      {
+        label: `$(discard) ${l10n.t("revert")}`,
+        value: i18n[language].revert,
+        description: l10n.t(
+          "(revert): Revert code, restore the previous version of the code"
+        ),
+      },
+      {
+        label: `$(jersey) ${l10n.t("style")}`,
+        value: i18n[language].style,
+        description: l10n.t("(style): Modify only style files"),
+      },
+      {
+        label: `$(lightbulb) ${l10n.t("refactor")}`,
+        value: i18n[language].refactor,
+        description: l10n.t(
+          "(refactor): Refactor code to fix issues, support new features, or optimize performance"
+        ),
+      },
+      {
+        label: l10n.t("Without affecting code functionality"),
+        kind: QuickPickItemKind.Separator,
+        description: "",
+        value: "",
+      },
+      {
+        label: `$(book) ${l10n.t("docs")}`,
+        value: i18n[language].docs,
+        description: l10n.t("(docs): Modify only documentation files"),
+      },
+      {
+        label: `$(bookmark) ${l10n.t("release")}`,
+        value: i18n[language].release,
+        description: l10n.t(
+          "(release): Modify only release files, such as version notes"
+        ),
+      },
+      {
+        label: `$(beaker) ${l10n.t("test")}`,
+        value: i18n[language].test,
+        description: l10n.t("(test): Modify only test files"),
+      },
+      {
+        label: `$(play) ${l10n.t("build")}`,
+        value: i18n[language].build,
+        description: l10n.t("(build): Modify only build files"),
+      },
+      {
+        label: `$(sync) ${l10n.t("ci")}`,
+        value: i18n[language].ci,
+        description: l10n.t("Modify only CI configuration files"),
+      },
+    ];
+    if (Object.keys(customTypes)?.length) {
+      items.push(
+        {
+          label: l10n.t("Custom"),
+          kind: QuickPickItemKind.Separator,
+          description: "",
+          value: "",
+        },
+        ...Object.keys(customTypes)?.map((label) => ({
+          label,
+          value: label,
+          description: customTypes[label],
+        }))
+      );
+    }
     state.type = (await input.showQuickPick({
       step: 1,
       totalSteps,
@@ -109,94 +193,7 @@ export async function collectInputs() {
       ignoreFocusOut: true,
       activeItem: state.type,
       shouldResume: shouldResume,
-      items: [
-        {
-          label: `$(rocket) ${l10n.t("perf")}`,
-          value: i18n[language].perf,
-          description: l10n.t("(perf): Code or feature optimization, deletion"),
-        },
-        {
-          label: `$(sparkle) ${l10n.t("feat")}`,
-          value: i18n[language].feat,
-          description: l10n.t("(feat): Support for new features"),
-        },
-        {
-          label: `$(bug) ${l10n.t("fix")}`,
-          value: i18n[language].fix,
-          description: l10n.t("(fix): Bug fixes"),
-        },
-        {
-          label: `$(discard) ${l10n.t("revert")}`,
-          value: i18n[language].revert,
-          description: l10n.t(
-            "(revert): Revert code, restore the previous version of the code"
-          ),
-        },
-        {
-          label: `$(jersey) ${l10n.t("style")}`,
-          value: i18n[language].style,
-          description: l10n.t("(style): Modify only style files"),
-        },
-        {
-          label: `$(lightbulb) ${l10n.t("refactor")}`,
-          value: i18n[language].refactor,
-          description: l10n.t(
-            "(refactor): Rebuild code to fix issues, support new features, or optimize performance"
-          ),
-        },
-        {
-          label: l10n.t("Without affecting code functionality"),
-          kind: QuickPickItemKind.Separator,
-          description: "",
-          value: "",
-        },
-        {
-          label: `$(book) ${l10n.t("docs")}`,
-          value: i18n[language].docs,
-          description: l10n.t(
-            "(docs): Modify only documentation files, without affecting code functionality"
-          ),
-        },
-        {
-          label: `$(bookmark) ${l10n.t("release")}`,
-          value: i18n[language].release,
-          description: l10n.t(
-            "(release): Modify only release files, such as version notes, without affecting code functionality"
-          ),
-        },
-        {
-          label: `$(beaker) ${l10n.t("test")}`,
-          value: i18n[language].test,
-          description: l10n.t(
-            "(test): Modify only test files, without affecting code functionality"
-          ),
-        },
-        {
-          label: `$(play) ${l10n.t("build")}`,
-          value: i18n[language].build,
-          description: l10n.t(
-            "(build): Modify only build files, without affecting code functionality"
-          ),
-        },
-        {
-          label: `$(sync) ${l10n.t("ci")}`,
-          value: i18n[language].ci,
-          description: l10n.t(
-            "Modify only CI configuration files, without affecting code functionality"
-          ),
-        },
-        customTypes?.length && {
-          label: l10n.t("Custom"),
-          kind: QuickPickItemKind.Separator,
-          description: "",
-          value: "",
-        },
-        ...customTypes?.map((x: { name: string; description: string }) => ({
-          label: `$(git-commit) ${x.name}`,
-          value: x.name,
-          description: x.description,
-        })),
-      ]?.filter((x) => x),
+      items,
     })) as QuickPickItemWithValue;
     updateGitCommitMessage(state);
     return (input: MultiStepInput) => inputJira(input, state);

@@ -1,5 +1,5 @@
 {
-    "customTypes": "Custom Types",
+    "customTypes": "Custom Types, e.g. `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "Description",
     "enableJira": "Enable Jira",
     "jiraPrefix": "Jira project prefix, only valid when `Enable Jira` is picked, e.g. PROJECT-",
