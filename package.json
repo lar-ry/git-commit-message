@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "LarryLan",
   "icon": "assets/logo.png",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -41,6 +41,10 @@
             "zh-CN",
             "en-US"
           ],
+          "enumDescriptions": [
+            "简体中文",
+            "English"
+          ],
           "default": "zh-CN"
         },
         "gitCommitMessage.enableJira": {
@@ -50,17 +54,17 @@
         },
         "gitCommitMessage.jiraUrl": {
           "type": "string",
-          "description": "Jira URL, 如: https://jira.sample.com/browse/",
+          "description": "Jira URL, 仅在 Enable Jira 启用时有效, 如: https://jira.sample.com/browse/",
           "default": ""
         },
         "gitCommitMessage.jiraPrefix": {
           "type": "string",
-          "description": "Jira 项目前缀, 如: PROJECT-",
+          "description": "Jira 项目前缀, 仅在 Enable Jira 启用时有效, 如: PROJECT-",
           "default": ""
         },
         "gitCommitMessage.reporters": {
           "type": "array",
-          "description": "报告人列表（名字 + 邮箱）",
+          "markdownDescription": "报告人列表\n- `name`: 报告人名字\n- `email`: 报告人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
           "items": {
             "type": "object",
             "properties": {
@@ -86,7 +90,7 @@
         },
         "gitCommitMessage.reviewers": {
           "type": "array",
-          "description": "审阅人列表（名字 + 邮箱）",
+          "markdownDescription": "审阅人列表\n- `name`: 审阅人名字\n- `email`: 审阅人邮箱\n- `picked`: 是否默认勾选\n\n```json\n[\n  { \"name\": \"Reviewer\", \"email\": \"reviewer@sample.com\", \"picked\": true }\n]\n```",
           "items": {
             "type": "object",
             "properties": {

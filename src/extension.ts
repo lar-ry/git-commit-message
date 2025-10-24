@@ -27,10 +27,13 @@ export function activate(context: vscode.ExtensionContext) {
         signerEmail,
       } = vscode.workspace.getConfiguration("gitCommitMessage");
 
-      const totalSteps = enableJira ? 8 : 7;
+      let totalSteps = 5;
+      totalSteps += enableJira ? 1 : 0;
+      totalSteps += reporters.length ? 1 : 0;
+      totalSteps += reviewers.length ? 1 : 0;
       let step = 1;
       let commitMsg = "";
-      // Step: 选择提交类型
+      // [必要步骤]: 选择提交类型
       const type = await vscode.window.showQuickPick(
         [
           {
@@ -105,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
       commitMsg += type.value;
       repo.inputBox.value = commitMsg;
 
-      // Step: 输入Jira
+      // [非必要步骤]: 输入Jira
       const jiraId = enableJira
         ? await vscode.window.showInputBox({
             title: `Git Commit Message: Jira ID (${step++}/${totalSteps})`,
@@ -119,7 +122,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
       commitMsg += jiraId ? `[${jiraPrefix}${jiraId}]` : "";
       repo.inputBox.value = commitMsg;
-      // Step: 输入范围
+      // [必要步骤]: 输入范围
       const scope = await vscode.window.showInputBox({
         title: `Git Commit Message: 范围 (${step++}/${totalSteps})`,
         prompt: "可不填",
@@ -130,10 +133,10 @@ export function activate(context: vscode.ExtensionContext) {
       if (scope === undefined) {
         return; // 用户取消
       }
-      commitMsg += scope ? `.${scope}` : "";
+      commitMsg += scope ? `${jiraId ? "" : "."}${scope}` : "";
       repo.inputBox.value = commitMsg;
 
-      // Step: 输入摘要
+      // [必要步骤]: 输入摘要
       const summary = await vscode.window.showInputBox({
         title: `Git Commit Message: 摘要 (${step++}/${totalSteps})`,
         prompt: "必填, 不可换行",
@@ -149,7 +152,7 @@ export function activate(context: vscode.ExtensionContext) {
       commitMsg += `: ${summary}`;
       repo.inputBox.value = commitMsg;
 
-      // Step: 输入描述
+      // [必要步骤]: 输入描述
       const detail = await vscode.window.showInputBox({
         title: `Git Commit Message: 详情 (${step++}/${totalSteps})`,
         prompt: "可不填, 可使用\\n换行",
@@ -162,7 +165,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
       commitMsg += detail ? `\n\n${detail?.replaceAll("\\n", "\n")}` : "";
       repo.inputBox.value = commitMsg;
-      // Step: 输入描述
+      // [必要步骤]: 输入描述
       const breakingChange = await vscode.window.showInputBox({
         title: `Git Commit Message: 破坏性变更 (${step++}/${totalSteps})`,
         prompt: "可不填, 可使用\\n换行",
@@ -183,7 +186,7 @@ export function activate(context: vscode.ExtensionContext) {
           : "";
       repo.inputBox.value = commitMsg;
 
-      // Step: 选择报告人
+      // [非必要步骤]: 选择报告人
       const reportersOptions: {
         label: string;
         value: string;
@@ -197,12 +200,14 @@ export function activate(context: vscode.ExtensionContext) {
           picked: x.picked,
         })
       );
-      const reporter = await vscode.window.showQuickPick(reportersOptions, {
-        title: `Git Commit Message: 选择报告人 (${step++}/${totalSteps})`,
-        placeHolder: "选择报告人 (多选, 可不选)",
-        ignoreFocusOut: true,
-        canPickMany: true,
-      });
+      const reporter = reporters.length
+        ? await vscode.window.showQuickPick(reportersOptions, {
+            title: `Git Commit Message: 选择报告人 (${step++}/${totalSteps})`,
+            placeHolder: "选择报告人 (多选, 可不选)",
+            ignoreFocusOut: true,
+            canPickMany: true,
+          })
+        : [];
 
       if (reporter === undefined) {
         return; // 用户取消
@@ -214,7 +219,7 @@ export function activate(context: vscode.ExtensionContext) {
         : "";
       repo.inputBox.value = commitMsg;
 
-      // Step: 选择审阅人
+      // [非必要步骤]: 选择审阅人
       const reviewersOptions: {
         label: string;
         value: string;
@@ -228,12 +233,14 @@ export function activate(context: vscode.ExtensionContext) {
           picked: x.picked,
         })
       );
-      const reviewer = await vscode.window.showQuickPick(reviewersOptions, {
-        title: `Git Commit Message: 选择审阅人 (${step++}/${totalSteps})`,
-        placeHolder: "选择审阅人 (多选, 可不选)",
-        ignoreFocusOut: true,
-        canPickMany: true,
-      });
+      const reviewer = reviewers.length
+        ? await vscode.window.showQuickPick(reviewersOptions, {
+            title: `Git Commit Message: 选择审阅人 (${step++}/${totalSteps})`,
+            placeHolder: "选择审阅人 (多选, 可不选)",
+            ignoreFocusOut: true,
+            canPickMany: true,
+          })
+        : [];
 
       if (reviewer === undefined) {
         return; // 用户取消
@@ -243,8 +250,6 @@ export function activate(context: vscode.ExtensionContext) {
             .map((x) => `\n${i18n[language].reviewer}: ${x.value}`)
             .join("")}`
         : "";
-
-      // Step: 选择提交人
 
       commitMsg +=
         signerName || signerEmail ? `\n\n${i18n[language].signer}:` : "";
