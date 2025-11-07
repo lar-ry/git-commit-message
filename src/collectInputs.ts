@@ -5,6 +5,7 @@ import {
   QuickPickItem,
   l10n,
   QuickPickItemKind,
+  commands,
 } from "vscode";
 import i18nJSON from "./i18n.json";
 import { MultiStepInput } from "./multiStepInput";
@@ -383,9 +384,36 @@ export async function collectInputs() {
             value: "Done",
             description: l10n.t("Selection done and then exit, goodbye"),
           },
+          {
+            label: `$(check) ${l10n.t("Done & Commit")}`,
+            value: "Done & Commit",
+            description: l10n.t(
+              "Selection done & commit and then exit, goodbye"
+            ),
+          },
+          {
+            label: `$(plus) ${l10n.t("Done & Stage All & Commit")}`,
+            value: "Done & Stage All & Commit",
+            description: l10n.t(
+              "Selection done & stage all & commit and then exit, goodbye"
+            ),
+          },
         ],
       })) as QuickPickItemWithValue;
       if (state.done?.value === "Done") {
+        break;
+      }
+      if (state.done?.value === "Done & Commit") {
+        await commands.executeCommand("git.commit", {
+          message: repo.inputBox.value,
+        });
+        break;
+      }
+      if (state.done?.value === "Done & Stage All & Commit") {
+        await commands.executeCommand("git.stageAll");
+        await commands.executeCommand("git.commit", {
+          message: repo.inputBox.value,
+        });
         break;
       }
     }
