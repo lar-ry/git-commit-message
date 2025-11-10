@@ -1,11 +1,19 @@
 ![English](https://badgen.net/badge/English/en)
 ![中文](https://badgen.net/badge/中文/zh-cn/red)
-![License](https://badgen.net/badge/License/MIT)
 ![VS Code](https://badgen.net/badge/VS%20Code/^v1.78.0)
-![version](https://badgen.net/vs-marketplace/v/larry-lan.git-commit-message)
-![installs](https://badgen.net/vs-marketplace/i/larry-lan.git-commit-message)
-![downloads](https://badgen.net/vs-marketplace/d/larry-lan.git-commit-message)
-![rating](https://badgen.net/vs-marketplace/rating/larry-lan.git-commit-message)
+[![github](https://badgen.net/badge/icon/git-commit-message?icon=github&label)][github]
+[![license](https://badgen.net/github/license/lar-ry/git-commit-message)][license]
+[![version](https://badgen.net/vs-marketplace/v/larry-lan.git-commit-message)][version]
+[![installs](https://badgen.net/vs-marketplace/i/larry-lan.git-commit-message)][installs]
+[![downloads](https://badgen.net/vs-marketplace/d/larry-lan.git-commit-message)][downloads]
+[![rating](https://badgen.net/vs-marketplace/rating/larry-lan.git-commit-message)][rating]
+
+[github]: https://github.com/lar-ry/git-commit-message
+[license]: https://github.com/lar-ry/git-commit-message/blob/main/LICENSE
+[version]: https://marketplace.visualstudio.com/items?itemName=larry-lan.git-commit-message&ssr=false
+[installs]: https://marketplace.visualstudio.com/items?itemName=larry-lan.git-commit-message&ssr=false
+[downloads]: https://marketplace.visualstudio.com/items?itemName=larry-lan.git-commit-message&ssr=false
+[rating]: https://marketplace.visualstudio.com/items?itemName=larry-lan.git-commit-message&ssr=false#review-details
 
 # Git Commit Message - Git 提交说明
 
