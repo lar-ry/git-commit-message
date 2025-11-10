@@ -10,7 +10,13 @@ vsc-extension-quickstart.md
 **/*.ts
 **/.vscode-test.*
 assets/**
-!assets/logo.png
+.eslint*
+.git/**
+package-lock.json
+node_modules/**
 l10n/bundle.l10n.qps-ploc.json
 l10n/bundle.l10n.json
 package.nls.qps-ploc.json
+out/test/**
+esbuild.config.js
+!assets/logo.png
