@@ -19,4 +19,5 @@ l10n/bundle.l10n.json
 package.nls.qps-ploc.json
 out/test/**
 esbuild.config.js
+HISTORY.md
 !assets/logo.png
