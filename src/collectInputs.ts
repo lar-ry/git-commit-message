@@ -149,16 +149,16 @@ export async function collectInputs() {
         description: l10n.t("Modify only build files"),
       },
       {
+        label: `$(symbol-misc) ${l10n.t("chore")}`,
+        value: i18n.chore,
+        description: l10n.t("Modify only non-functional files"),
+      },
+      {
         label: `$(sync) ${l10n.t("ci")}`,
         value: i18n.ci,
         description: l10n.t(
           "Modify only continuous integration configuration files"
         ),
-      },
-      {
-        label: `$(symbol-misc) ${l10n.t("chore")}`,
-        value: i18n.chore,
-        description: l10n.t("Modify only non-functional changes files"),
       },
     ];
     if (Object.keys(config.customTypes)?.length) {
@@ -373,26 +373,40 @@ export async function collectInputs() {
         shouldResume: shouldResume,
         items: [
           {
-            label: `$(stop-circle) ${l10n.t("Check")}`,
+            label: l10n.t("Check"),
+            kind: QuickPickItemKind.Separator,
+            description: "",
+            value: "",
+          },
+          {
+            label: `$(debug-pause) ${l10n.t("Check")}`,
             value: "Check",
             description: l10n.t(
               "Please check the git change message, you can go back to modify it, and select done after confirmation"
             ),
           },
           {
-            label: `$(pass) ${l10n.t("Done")}`,
+            label: l10n.t("Done"),
+            kind: QuickPickItemKind.Separator,
+            description: "",
+            value: "",
+          },
+          {
+            label: `$(debug-stop) ${l10n.t("Done")}`,
             value: "Done",
             description: l10n.t("Selection done and then exit, goodbye"),
           },
           {
-            label: `$(check) ${l10n.t("Done & Commit")}`,
+            label: `$(debug-stop) $(check) ${l10n.t("Done & Commit")}`,
             value: "Done & Commit",
             description: l10n.t(
               "Selection done & commit and then exit, goodbye"
             ),
           },
           {
-            label: `$(plus) ${l10n.t("Done & Stage All & Commit")}`,
+            label: `$(debug-stop) $(plus) $(check) ${l10n.t(
+              "Done & Stage All & Commit"
+            )}`,
             value: "Done & Stage All & Commit",
             description: l10n.t(
               "Selection done & stage all & commit and then exit, goodbye"

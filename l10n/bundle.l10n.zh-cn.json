@@ -28,6 +28,7 @@
     "Modify only test files": "仅更改测试文件",
     "No git repository found": "没有找到 git 仓库",
     "Not selected": "不选择",
+    "Open Settings": "打开设置",
     "Optional": "可不填",
     "Optional, you can use \\n to wrap": "可不填, 可使用\\n换行",
     "perf": "优化",

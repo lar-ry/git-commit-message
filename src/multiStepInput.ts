@@ -12,6 +12,8 @@ import {
   QuickInputButtons,
   l10n,
   QuickPickItemKind,
+  ThemeIcon,
+  commands,
 } from "vscode";
 
 // -------------------------------------------------------
@@ -133,6 +135,10 @@ export class MultiStepInput {
           );
         }
         input.buttons = [
+          {
+            iconPath: new ThemeIcon("gear"),
+            tooltip: l10n.t("Open Settings"),
+          },
           ...(this.steps.length > 1 ? [QuickInputButtons.Back] : []),
           ...(buttons || []),
         ];
@@ -140,6 +146,12 @@ export class MultiStepInput {
           input.onDidTriggerButton((item) => {
             if (item === QuickInputButtons.Back) {
               reject(InputFlowAction.back);
+            } else if (item.tooltip === l10n.t("Open Settings")) {
+              commands.executeCommand(
+                "workbench.action.openSettings",
+                "@ext:larry-lan.git-commit-message"
+              );
+              input.hide();
             } else {
               resolve(item as any);
             }
@@ -217,6 +229,10 @@ export class MultiStepInput {
         input.ignoreFocusOut = ignoreFocusOut ?? false;
         input.placeholder = placeholder;
         input.buttons = [
+          {
+            iconPath: new ThemeIcon("gear"),
+            tooltip: l10n.t("Open Settings"),
+          },
           ...(this.steps.length > 1 ? [QuickInputButtons.Back] : []),
           ...(buttons || []),
         ];
@@ -225,6 +241,12 @@ export class MultiStepInput {
           input.onDidTriggerButton((item) => {
             if (item === QuickInputButtons.Back) {
               reject(InputFlowAction.back);
+            } else if (item.tooltip === l10n.t("Open Settings")) {
+              commands.executeCommand(
+                "workbench.action.openSettings",
+                "@ext:larry-lan.git-commit-message"
+              );
+              input.hide();
             } else {
               resolve(item as any);
             }
