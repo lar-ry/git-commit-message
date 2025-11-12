@@ -8,6 +8,7 @@ import {
   commands,
   Uri,
   ExtensionContext,
+  ThemeIcon,
 } from "vscode";
 import { MultiStepInput } from "./multiStepInput";
 import { renderString } from "nunjucks";
@@ -23,7 +24,22 @@ async function getI18n(context: ExtensionContext, language?: string) {
   return null;
 }
 
-export async function collectInputs(context: ExtensionContext) {
+function getRepo() {
+  // Get the git extension
+  const gitExtension = extensions.getExtension("vscode.git")?.exports;
+  if (!gitExtension) {
+    window.showErrorMessage(l10n.t("Git extension not activated"));
+    return null;
+  }
+  const repo = gitExtension.getAPI(1).repositories[0];
+  if (!repo) {
+    window.showErrorMessage(l10n.t("No git repository found"));
+    return null;
+  }
+  return repo;
+}
+
+export async function edit(context: ExtensionContext) {
   type QuickPickItemWithValue = QuickPickItem & {
     value: string;
     name?: string;
@@ -50,15 +66,9 @@ export async function collectInputs(context: ExtensionContext) {
     });
   }
 
-  // Get the git extension
-  const gitExtension = extensions.getExtension("vscode.git")?.exports;
-  if (!gitExtension) {
-    return window.showErrorMessage(l10n.t("Git extension not activated"));
-  }
-  const git = gitExtension.getAPI(1);
-  const repo = git.repositories[0];
+  const repo = getRepo();
   if (!repo) {
-    return window.showErrorMessage(l10n.t("No git repository found"));
+    return;
   }
 
   const config = workspace.getConfiguration("gitCommitMessage");
@@ -109,38 +119,44 @@ export async function collectInputs(context: ExtensionContext) {
   async function pickType(input: MultiStepInput, state: Partial<State>) {
     const items: QuickPickItemWithValue[] = [
       {
-        label: `$(rocket) ${l10n.t("perf")}`,
+        label: l10n.t("perf"),
         value: t("perf"),
         description: l10n.t("Code or feature optimization, deletion"),
+        iconPath: new ThemeIcon("zap"),
       },
       {
-        label: `$(sparkle) ${l10n.t("feat")}`,
+        label: l10n.t("feat"),
         value: t("feat"),
         description: l10n.t("Support for new features"),
+        iconPath: new ThemeIcon("sparkle"),
       },
       {
-        label: `$(bug) ${l10n.t("fix")}`,
+        label: l10n.t("fix"),
         value: t("fix"),
         description: l10n.t("Bug fixes"),
+        iconPath: new ThemeIcon("bug"),
       },
       {
-        label: `$(discard) ${l10n.t("revert")}`,
+        label: l10n.t("revert"),
         value: t("revert"),
         description: l10n.t(
           "Revert code, restore the previous version of the code"
         ),
+        iconPath: new ThemeIcon("discard"),
       },
       {
-        label: `$(jersey) ${l10n.t("style")}`,
+        label: l10n.t("style"),
         value: t("style"),
         description: l10n.t("Modify only style files"),
+        iconPath: new ThemeIcon("jersey"),
       },
       {
-        label: `$(lightbulb) ${l10n.t("refactor")}`,
+        label: l10n.t("refactor"),
         value: t("refactor"),
         description: l10n.t(
           "Refactor code to fix issues, support new features, or optimize performance"
         ),
+        iconPath: new ThemeIcon("lightbulb"),
       },
       {
         label: l10n.t("Without affecting code functionality"),
@@ -149,36 +165,42 @@ export async function collectInputs(context: ExtensionContext) {
         value: "",
       },
       {
-        label: `$(book) ${l10n.t("docs")}`,
+        label: l10n.t("docs"),
         value: t("docs"),
         description: l10n.t("Modify only documentation files"),
+        iconPath: new ThemeIcon("book"),
       },
       {
-        label: `$(bookmark) ${l10n.t("release")}`,
+        label: l10n.t("release"),
         value: t("release"),
         description: l10n.t("Modify only release files, such as version notes"),
+        iconPath: new ThemeIcon("bookmark"),
       },
       {
-        label: `$(beaker) ${l10n.t("test")}`,
+        label: l10n.t("test"),
         value: t("test"),
         description: l10n.t("Modify only test files"),
+        iconPath: new ThemeIcon("beaker"),
       },
       {
-        label: `$(play) ${l10n.t("build")}`,
+        label: l10n.t("build"),
         value: t("build"),
         description: l10n.t("Modify only build files"),
+        iconPath: new ThemeIcon("play"),
       },
       {
-        label: `$(symbol-misc) ${l10n.t("chore")}`,
+        label: l10n.t("chore"),
         value: t("chore"),
         description: l10n.t("Modify only non-functional files"),
+        iconPath: new ThemeIcon("symbol-misc"),
       },
       {
-        label: `$(sync) ${l10n.t("ci")}`,
+        label: l10n.t("ci"),
         value: t("ci"),
         description: l10n.t(
           "Modify only continuous integration configuration files"
         ),
+        iconPath: new ThemeIcon("sync"),
       },
     ];
     if (Object.keys(config.customTypes)?.length) {
@@ -205,9 +227,10 @@ export async function collectInputs(context: ExtensionContext) {
           value: "",
         },
         {
-          label: `$(pencil) ${state.type}`,
+          label: state.type,
           description: l10n.t("Custom input"),
           value: state.type,
+          iconPath: new ThemeIcon("pencil"),
         }
       );
     }
@@ -219,9 +242,10 @@ export async function collectInputs(context: ExtensionContext) {
         value: "",
       },
       {
-        label: `$(circle-slash)`,
+        label: "",
         value: "",
         description: l10n.t("Not selected"),
+        iconPath: new ThemeIcon("circle-slash"),
       }
     );
     state.typeItem = (await input.showQuickPick({
@@ -399,11 +423,12 @@ export async function collectInputs(context: ExtensionContext) {
             value: "",
           },
           {
-            label: `$(debug-pause) ${l10n.t("Check")}`,
+            label: l10n.t("Check"),
             value: "Check",
             description: l10n.t(
-              "Please check the git change message, you can go back to modify it, and select done after confirmation"
+              "Please check the change message, you can go back to modify it, and select done after confirmation"
             ),
+            iconPath: new ThemeIcon("circle-large-outline"),
           },
           {
             label: l10n.t("Done"),
@@ -412,25 +437,26 @@ export async function collectInputs(context: ExtensionContext) {
             value: "",
           },
           {
-            label: `$(debug-stop) ${l10n.t("Done")}`,
+            label: l10n.t("Done"),
             value: "Done",
             description: l10n.t("Selection done and then exit, goodbye"),
+            iconPath: new ThemeIcon("pass-filled"),
           },
           {
-            label: `$(debug-stop) $(check) ${l10n.t("Done & Commit")}`,
+            label: l10n.t("Done & Commit"),
             value: "Done & Commit",
             description: l10n.t(
               "Selection done & commit and then exit, goodbye"
             ),
+            iconPath: new ThemeIcon("pass-filled"),
           },
           {
-            label: `$(debug-stop) $(plus) $(check) ${l10n.t(
-              "Done & Stage All & Commit"
-            )}`,
+            label: l10n.t("Done & Stage All & Commit"),
             value: "Done & Stage All & Commit",
             description: l10n.t(
               "Selection done & stage all & commit and then exit, goodbye"
             ),
+            iconPath: new ThemeIcon("pass-filled"),
           },
         ],
       })) as QuickPickItemWithValue;
@@ -452,4 +478,12 @@ export async function collectInputs(context: ExtensionContext) {
       }
     }
   }
+}
+
+export async function clear() {
+  const repo = getRepo();
+  if (!repo) {
+    return;
+  }
+  repo.inputBox.value = "";
 }

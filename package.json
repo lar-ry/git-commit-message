@@ -1,7 +1,7 @@
 {
   "name": "git-commit-message",
   "displayName": "Git Commit Message",
-  "description": "Generate a fixed-format git commit message from a custom template",
+  "description": "Generate a fixed-format git commit message from your template",
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
@@ -21,15 +21,22 @@
   "contributes": {
     "commands": [
       {
-        "command": "larry-lan.gitCommitMessage",
-        "title": "%gitCommitMessage%",
-        "icon": "$(pencil)"
+        "command": "larry-lan.gitCommitMessage.edit",
+        "title": "%edit%",
+        "icon": "$(pencil)",
+        "category": "%gitCommitMessage%"
+      },
+      {
+        "command": "larry-lan.gitCommitMessage.clear",
+        "title": "%clear%",
+        "icon": "$(clear-all)",
+        "category": "%gitCommitMessage%"
       }
     ],
     "menus": {
       "scm/title": [
         {
-          "command": "larry-lan.gitCommitMessage",
+          "command": "larry-lan.gitCommitMessage.edit",
           "when": "scmProvider == git",
           "group": "navigation"
         }

@@ -1,6 +1,8 @@
 {
+    "clear": "清除",
     "customTypes": "自定义类型, 如: `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "描述",
+    "edit": "编辑",
     "gitCommitMessage": "Git 提交说明",
     "jira.enable": "Jira 使能",
     "jira.prefix": "Jira 项目前缀, 仅在 `#gitCommitMessage.jira.enable#` 启用时有效, 如: PROJECT-",

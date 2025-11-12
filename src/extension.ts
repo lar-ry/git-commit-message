@@ -1,12 +1,15 @@
 import * as vscode from "vscode";
-import { collectInputs } from "./collectInputs";
+import { edit, clear } from "./commitMessage";
 
 export function activate(context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand(
-    "larry-lan.gitCommitMessage",
-    () => collectInputs(context)
+  context.subscriptions.push(
+    vscode.commands.registerCommand("larry-lan.gitCommitMessage.edit", () =>
+      edit(context)
+    )
   );
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand("larry-lan.gitCommitMessage.clear", clear)
+  );
 }
 
 // This method is called when your extension is deactivated

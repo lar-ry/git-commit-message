@@ -34,7 +34,7 @@
     "Optional": "可不填",
     "Optional, you can use \\n to wrap": "可不填, 可使用\\n换行",
     "perf": "优化",
-    "Please check the git change message, you can go back to modify it, and select done after confirmation": "请检查 git 变更消息, 可返回修改, 确认后请选择完成",
+    "Please check the change message, you can go back to modify it, and select done after confirmation": "请检查更改的消息, 可返回修改, 确认后请选择完成",
     "refactor": "重构",
     "Refactor code to fix issues, support new features, or optimize performance": "为修复问题或支持新功能或优化性能而进行代码重新构建",
     "release": "发布",

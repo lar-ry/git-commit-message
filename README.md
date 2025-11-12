@@ -17,15 +17,15 @@
 
 # Git Commit Message - Git 提交说明
 
-Generate a fixed-format git commit message from a custom template
+Generate a fixed-format git commit message from your template
 
 由自定义模板生成固定格式的 git 提交说明
 
 ## Quick Start - 使用方法
 
-Run `Git Commit Message` from the command palette or click the edit button in the upper right corner of the repository changed message input box
+Run `Git Commit Message: Edit` from the command palette or click the edit button in the upper right corner of the repository changed message input box
 
-使用命令面板运行 `Git Commit Message` 或点击仓库更改消息输入框右上角的编辑按键
+使用命令面板运行 `Git 提交说明: 编辑` 或点击仓库更改消息输入框右上角的编辑按键
 
 ![Demo](https://github.com/lar-ry/git-commit-message/raw/HEAD/assets/demo.gif)
 
@@ -34,6 +34,10 @@ The hover details of the commits in the git graph are as follows. Clicking on th
 Git 图形中提交的悬浮详细信息如下, 点击问题单链接可以跳转到配置的 Jira 问题详情页面
 
 ![Detail](https://github.com/lar-ry/git-commit-message/raw/HEAD/assets/detail.png)
+
+> Run `Git Commit Message: Clear` from the command palette will clear the changed message input box.
+
+> 从命令面板运行 `Git 提交说明: 清除`，可以清除更改消息输入框
 
 ## Example in English
 
