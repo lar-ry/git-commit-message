@@ -35,7 +35,7 @@ Git 图形中提交的悬浮详细信息如下, 点击问题单链接可以跳�
 
 ![Detail](https://github.com/lar-ry/git-commit-message/raw/HEAD/assets/detail.png)
 
-> Run `Git Commit Message: Clear` from the command palette will clear the changed message input box.
+> Run `Git Commit Message: Clear` from the command palette will clear the changed message input box
 
 > 从命令面板运行 `Git 提交说明: 清除`，可以清除更改消息输入框
 
