@@ -1,7 +1,7 @@
 {
     "clear": "清除",
     "customTypes": "自定义类型, 如: `{ \"customType\": \"(customType) custom type description\" }`",
-    "description": "描述",
+    "description": "由自定义模板生成固定格式的 git 提交说明",
     "edit": "编辑",
     "gitCommitMessage": "Git 提交说明",
     "jira.enable": "Jira 使能",

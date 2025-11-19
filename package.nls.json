@@ -1,7 +1,7 @@
 {
     "clear": "Clear",
     "customTypes": "Custom Types, e.g. `{ \"customType\": \"(customType) custom type description\" }`",
-    "description": "Description",
+    "description": "Generate a fixed-format git commit message from your template",
     "edit": "Edit",
     "gitCommitMessage": "Git Commit Message",
     "jira.enable": "Jira enable",
