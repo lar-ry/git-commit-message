@@ -1,13 +1,16 @@
 {
     "clear": "Clear",
+    "custom": "Custom",
     "customTypes": "Custom Types, e.g. `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "Generate a fixed-format git commit message from your template",
     "edit": "Edit",
+    "general": "General",
     "gitCommitMessage": "Git Commit Message",
     "jira.enable": "Jira enable",
     "jira.prefix": "Jira project prefix, only valid when `#gitCommitMessage.jira.enable#` is picked, e.g. PROJECT-",
     "jira.url": "Jira URL, only valid when `#gitCommitMessage.jira.enable#` is picked, e.g. https://jira.sample.com/browse/",
     "language": "Commit message language",
+    "legacy": "Legacy",
     "name": "Name",
     "picked": "Picked default",
     "reporters": "Reporters\n- `name`: Reporter's name\n- `email`: Reporter's email\n- `picked`: Picked default\n\n```json\n[\n  { \"name\": \"Reporter\", \"email\": \"reporter@sample.com\", \"picked\": true }\n]\n```",
@@ -18,5 +21,6 @@
     "reviewers.name": "Reviewer's name",
     "signer.email": "Signer's email",
     "signer.name": "Signer's name",
-    "template": "Template [Read more about configuring profiles](https://github.com/lar-ry/git-commit-message/blob/master/README.md)"
+    "template": "Template",
+    "template.custom": "Custom template, only valid when `#gitCommitMessage.template#` is custom, [Read more about configuring profiles](https://github.com/lar-ry/git-commit-message/blob/master/README.md)"
 }

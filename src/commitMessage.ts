@@ -88,12 +88,82 @@ export async function edit(context: ExtensionContext) {
   totalSteps += config.reporters.length ? 1 : 0;
   totalSteps += config.reviewers.length ? 1 : 0;
   const state = {} as Partial<State>;
-  await MultiStepInput.run((input) => pickType(input, state));
+  await MultiStepInput.run((input) => inputJira(input, state));
   return state as State;
 
   function updateGitCommitMessage(state: Partial<State>) {
+    const templates = {
+      general: [
+        "{% if scope %}",
+        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}({{ scope }}): {{ summary }}",
+        "{% elif type %}",
+        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}: {{ summary }}",
+        "{% else %}",
+        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ summary }}",
+        "{% endif %}",
+        "",
+        "{{ detail }}",
+        "",
+        "{% if breakingChange %}",
+        "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
+        "{% endif %}",
+        "",
+        "{% if jira.enable and jira.url and jira.id %}",
+        "[{{ jira.prefix }}{{ jira.id }}]: {{ jira.url }}{{ jira.prefix }}{{ jira.id }}",
+        "{% endif %}",
+        "",
+        "{% for reporter in reporters -%}",
+        "{{ Reporter }}: {{ reporter.name }} <{{ reporter.email }}>",
+        "{% endfor %}",
+        "",
+        "{% for reviewer in reviewers -%}",
+        "{{ Reviewer }}: {{ reviewer.name }} <{{ reviewer.email }}>",
+        "{% endfor %}",
+        "",
+        "{% if signer.name or signer.email %}",
+        "{{ Signer }}: {{ signer.name }} <{{ signer.email }}>",
+        "{% endif %}",
+      ],
+      legacy: [
+        "{% if jira.id %}",
+        "{{ type }}[{{ jira.prefix }}{{ jira.id }}]{{ scope }}: {{ summary }}",
+        "{% elif type and scope %}",
+        "{{ type }}.{{ scope }}: {{ summary }}",
+        "{% elif type or scope %}",
+        "{{ type }}{{ scope }}: {{ summary }}",
+        "{% else %}",
+        "{{ summary }}",
+        "{% endif %}",
+        "",
+        "{{ detail }}",
+        "",
+        "{% if breakingChange %}",
+        "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
+        "{% endif %}",
+        "",
+        "{% if jira.enable and jira.url and jira.id %}",
+        "[{{ jira.prefix }}{{ jira.id }}]: {{ jira.url }}{{ jira.prefix }}{{ jira.id }}",
+        "{% endif %}",
+        "",
+        "{% for reporter in reporters -%}",
+        "{{ Reporter }}: {{ reporter.name }} <{{ reporter.email }}>",
+        "{% endfor %}",
+        "",
+        "{% for reviewer in reviewers -%}",
+        "{{ Reviewer }}: {{ reviewer.name }} <{{ reviewer.email }}>",
+        "{% endfor %}",
+        "",
+        "{% if signer.name or signer.email %}",
+        "{{ Signer }}: {{ signer.name }} <{{ signer.email }}>",
+        "{% endif %}",
+      ],
+      custom: config.template.custom,
+    };
     repo.inputBox.value = renderString(
-      config.template?.join?.("\n") ?? config.template,
+      (
+        templates?.[config.template as keyof typeof templates] ??
+        templates.general
+      )?.join("\n"),
       {
         type: state?.type ?? "",
         scope: state?.scope ?? "",
@@ -116,6 +186,23 @@ export async function edit(context: ExtensionContext) {
       ?.replace(/\n+$/g, "");
   }
 
+  async function inputJira(input: MultiStepInput, state: Partial<State>) {
+    if (config.jira.enable) {
+      state.jiraId = await input.showInputBox({
+        step: 1,
+        totalSteps,
+        title: l10n.t("Git Commit Message: {0}", "Jira ID"),
+        prompt: l10n.t("Optional"),
+        placeholder: l10n.t("Fill in Jira ID"),
+        ignoreFocusOut: true,
+        value: state.jiraId || "",
+        validate: async () => undefined,
+        shouldResume: shouldResume,
+      });
+      updateGitCommitMessage(state);
+    }
+    return (input: MultiStepInput) => pickType(input, state);
+  }
   async function pickType(input: MultiStepInput, state: Partial<State>) {
     const items: QuickPickItemWithValue[] = [
       {
@@ -249,7 +336,7 @@ export async function edit(context: ExtensionContext) {
       }
     );
     state.typeItem = (await input.showQuickPick({
-      step: 1,
+      step: 1 + (config.jira.enable ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Select Type")),
       placeholder: l10n.t("Select Type (single choice, required)"),
@@ -260,24 +347,6 @@ export async function edit(context: ExtensionContext) {
     })) as QuickPickItemWithValue;
     state.type = state.typeItem?.value ?? "";
     updateGitCommitMessage(state);
-    return (input: MultiStepInput) => inputJira(input, state);
-  }
-
-  async function inputJira(input: MultiStepInput, state: Partial<State>) {
-    if (config.jira.enable) {
-      state.jiraId = await input.showInputBox({
-        step: 2,
-        totalSteps,
-        title: l10n.t("Git Commit Message: {0}", "Jira ID"),
-        prompt: l10n.t("Optional"),
-        placeholder: l10n.t("Fill in Jira ID"),
-        ignoreFocusOut: true,
-        value: state.jiraId || "",
-        validate: async () => undefined,
-        shouldResume: shouldResume,
-      });
-      updateGitCommitMessage(state);
-    }
     return (input: MultiStepInput) => inputScope(input, state);
   }
 

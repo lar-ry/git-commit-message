@@ -41,6 +41,26 @@ Git 图形中提交的悬浮详细信息如下, 点击问题单链接可以跳�
 
 ## Example in English
 
+## General
+
+```
+[PROJECT-1234] perf(scope): summary
+
+detail
+
+BREAKING_CHANGE: breaking change
+
+[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
+
+Reported-by: Reporter <reporter@sample.com>
+
+Reviewed-by: Reviewer <reviewer@sample.com>
+
+Signed-off-by: Signer <signer@sample.com>
+```
+
+## Legacy
+
 ```
 perf[PROJECT-1234]scope: summary
 
@@ -58,6 +78,26 @@ Signed-off-by: Signer <signer@sample.com>
 ```
 
 ## 中文示例
+
+## 通用
+
+```
+[PROJECT-1234] 优化(范围): 摘要
+
+详情
+
+破坏性变更: 破坏性变更
+
+[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
+
+报告人: Reporter <reporter@sample.com>
+
+审阅人: Reviewer <reviewer@sample.com>
+
+提交人: Signer <signer@sample.com>
+```
+
+## 曾用
 
 ```
 优化[PROJECT-1234]范围: 摘要
@@ -115,49 +155,11 @@ Signed-off-by: Signer <signer@sample.com>
 }
 ```
 
-## Template - 模板
+## Custom Template - 自定义模板
 
 The template using the [Jinja2](https://palletsprojects.com/projects/jinja/) template language, implemented by [Nunjucks](https://mozilla.github.io/nunjucks/)
 
 模板采用 [Jinja2](https://palletsprojects.com/projects/jinja/) 模板语言, 通过 [Nunjucks](https://mozilla.github.io/nunjucks/) 实现
-
-```json
-{
-  "gitCommitMessage.template": [
-    "{% if jira.id %}",
-    "{{ type }}[{{ jira.prefix }}{{ jira.id }}]{{ scope }}: {{ summary }}",
-    "{% elif type and scope %}",
-    "{{ type }}.{{ scope }}: {{ summary }}",
-    "{% elif type or scope %}",
-    "{{ type }}{{ scope }}: {{ summary }}",
-    "{% else %}",
-    "{{ summary }}",
-    "{% endif %}",
-    "",
-    "{{ detail }}",
-    "",
-    "{% if breakingChange %}",
-    "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
-    "{% endif %}",
-    "",
-    "{% if jira.enable and jira.url and jira.id %}",
-    "[{{ jira.prefix }}{{ jira.id }}]: {{ jira.url }}{{ jira.prefix }}{{ jira.id }}",
-    "{% endif %}",
-    "",
-    "{% for reporter in reporters -%}",
-    "{{ Reporter }}: {{ reporter.name }} <{{ reporter.email }}>",
-    "{% endfor %}",
-    "",
-    "{% for reviewer in reviewers -%}",
-    "{{ Reviewer }}: {{ reviewer.name }} <{{ reviewer.email }}>",
-    "{% endfor %}",
-    "",
-    "{% if signer.name or signer.email %}",
-    "{{ Signer }}: {{ signer.name }} <{{ signer.email }}>",
-    "{% endif %}"
-  ]
-}
-```
 
 If you need to customize it, you can configure a text line list. The complete template variable fields that was supported are provided below
 
@@ -187,3 +189,40 @@ If you need to customize it, you can configure a text line list. The complete te
   - `Reporter`: Text "Reporter" - 文本 "报告人"
   - `Reviewer`: Text "Reviewer" - 文本 "审阅人"
   - `Signer`: Text "Signer" - 文本 "提交人"
+
+```json
+{
+  "gitCommitMessage.template": "custom",
+  "gitCommitMessage.template.custom": [
+    "{% if scope %}",
+    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}({{ scope }}): {{ summary }}",
+    "{% elif type %}",
+    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}: {{ summary }}",
+    "{% else %}",
+    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ summary }}",
+    "{% endif %}",
+    "",
+    "{{ detail }}",
+    "",
+    "{% if breakingChange %}",
+    "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
+    "{% endif %}",
+    "",
+    "{% if jira.enable and jira.url and jira.id %}",
+    "[{{ jira.prefix }}{{ jira.id }}]: {{ jira.url }}{{ jira.prefix }}{{ jira.id }}",
+    "{% endif %}",
+    "",
+    "{% for reporter in reporters -%}",
+    "{{ Reporter }}: {{ reporter.name }} <{{ reporter.email }}>",
+    "{% endfor %}",
+    "",
+    "{% for reviewer in reviewers -%}",
+    "{{ Reviewer }}: {{ reviewer.name }} <{{ reviewer.email }}>",
+    "{% endfor %}",
+    "",
+    "{% if signer.name or signer.email %}",
+    "{{ Signer }}: {{ signer.name }} <{{ signer.email }}>",
+    "{% endif %}"
+  ]
+}
+```
