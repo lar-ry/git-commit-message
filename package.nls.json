@@ -1,6 +1,7 @@
 {
     "clear": "Clear",
     "custom": "Custom",
+    "customScopes": "Custom Scopes, e.g. `{ \"customScope\": \"(customScope) custom scope description\" }`",
     "customTypes": "Custom Types, e.g. `{ \"customType\": \"(customType) custom type description\" }`",
     "description": "Generate a fixed-format git commit message from your template",
     "edit": "Edit",

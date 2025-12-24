@@ -51,6 +51,7 @@ export async function edit(context: ExtensionContext) {
     typeItem: QuickPickItemWithValue;
     jiraId: string;
     scope: string;
+    scopeItem: QuickPickItemWithValue;
     summary: string;
     detail: string;
     breakingChange: string;
@@ -302,6 +303,7 @@ export async function edit(context: ExtensionContext) {
           label,
           value: label,
           description: config.customTypes[label],
+          iconPath: new ThemeIcon("blank"),
         }))
       );
     }
@@ -339,7 +341,7 @@ export async function edit(context: ExtensionContext) {
       step: 1 + (config.jira.enable ? 1 : 0),
       totalSteps,
       title: l10n.t("Git Commit Message: {0}", l10n.t("Select Type")),
-      placeholder: l10n.t("Select Type (single choice, required)"),
+      placeholder: l10n.t("Select Type (single choice, fillable)"),
       ignoreFocusOut: true,
       activeItem: state.typeItem,
       shouldResume: shouldResume,
@@ -347,21 +349,87 @@ export async function edit(context: ExtensionContext) {
     })) as QuickPickItemWithValue;
     state.type = state.typeItem?.value ?? "";
     updateGitCommitMessage(state);
-    return (input: MultiStepInput) => inputScope(input, state);
+    return (input: MultiStepInput) => pickScope(input, state);
   }
 
-  async function inputScope(input: MultiStepInput, state: Partial<State>) {
-    state.scope = await input.showInputBox({
+  async function pickScope(input: MultiStepInput, state: Partial<State>) {
+    const items: QuickPickItemWithValue[] = [
+      {
+        label: l10n.t("config"),
+        value: t("config"),
+        description: l10n.t("config"),
+        iconPath: new ThemeIcon("settings"),
+      },
+      {
+        label: l10n.t("display"),
+        value: t("display"),
+        description: l10n.t("display"),
+        iconPath: new ThemeIcon("symbol-color"),
+      },
+      {
+        label: l10n.t("system"),
+        value: t("system"),
+        description: l10n.t("system"),
+        iconPath: new ThemeIcon("gear"),
+      },
+    ];
+    if (Object.keys(config.customScopes)?.length) {
+      items.push(
+        {
+          label: l10n.t("Custom options"),
+          kind: QuickPickItemKind.Separator,
+          description: "",
+          value: "",
+        },
+        ...Object.keys(config.customScopes)?.map((label) => ({
+          label,
+          value: label,
+          description: config.customScopes[label],
+          iconPath: new ThemeIcon("blank"),
+        }))
+      );
+    }
+    if (state.scope && !items.map((x) => x.value).includes(state.scope)) {
+      items.push(
+        {
+          label: l10n.t("Custom input"),
+          kind: QuickPickItemKind.Separator,
+          description: "",
+          value: "",
+        },
+        {
+          label: state.scope,
+          description: l10n.t("Custom input"),
+          value: state.scope,
+          iconPath: new ThemeIcon("pencil"),
+        }
+      );
+    }
+    items.push(
+      {
+        label: l10n.t("Not selected"),
+        kind: QuickPickItemKind.Separator,
+        description: "",
+        value: "",
+      },
+      {
+        label: "",
+        value: "",
+        description: l10n.t("Not selected"),
+        iconPath: new ThemeIcon("circle-slash"),
+      }
+    );
+    state.scopeItem = (await input.showQuickPick({
       step: 2 + (config.jira.enable ? 1 : 0),
       totalSteps,
-      title: l10n.t("Git Commit Message: {0}", l10n.t("Scope")),
-      prompt: l10n.t("Optional"),
-      placeholder: l10n.t("Fill in {0}", l10n.t("Scope")),
+      title: l10n.t("Git Commit Message: {0}", l10n.t("Select Scope")),
+      placeholder: l10n.t("Select Scope (single choice, fillable)"),
       ignoreFocusOut: true,
-      value: state.scope || "",
-      validate: async () => undefined,
+      activeItem: state.scopeItem,
       shouldResume: shouldResume,
-    });
+      items,
+    })) as QuickPickItemWithValue;
+    state.scope = state.scopeItem?.value ?? "";
     updateGitCommitMessage(state);
     return (input: MultiStepInput) => inputSummary(input, state);
   }
