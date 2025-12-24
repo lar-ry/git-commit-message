@@ -303,6 +303,7 @@ export async function edit(context: ExtensionContext) {
           label,
           value: label,
           description: config.customTypes[label],
+          iconPath: new ThemeIcon("blank"),
         }))
       );
     }
@@ -352,7 +353,26 @@ export async function edit(context: ExtensionContext) {
   }
 
   async function pickScope(input: MultiStepInput, state: Partial<State>) {
-    const items: QuickPickItemWithValue[] = [];
+    const items: QuickPickItemWithValue[] = [
+      {
+        label: l10n.t("config"),
+        value: t("config"),
+        description: l10n.t("config"),
+        iconPath: new ThemeIcon("settings"),
+      },
+      {
+        label: l10n.t("display"),
+        value: t("display"),
+        description: l10n.t("display"),
+        iconPath: new ThemeIcon("symbol-color"),
+      },
+      {
+        label: l10n.t("system"),
+        value: t("system"),
+        description: l10n.t("system"),
+        iconPath: new ThemeIcon("gear"),
+      },
+    ];
     if (Object.keys(config.customScopes)?.length) {
       items.push(
         {
@@ -365,6 +385,7 @@ export async function edit(context: ExtensionContext) {
           label,
           value: label,
           description: config.customScopes[label],
+          iconPath: new ThemeIcon("blank"),
         }))
       );
     }
