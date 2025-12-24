@@ -117,6 +117,7 @@ Signed-off-by: Signer <signer@sample.com>
 
 ## Setting - 设置
 
+- `customScopes`: Custom scopes - 自定义范围
 - `customTypes`: Custom types - 自定义类型
 - `jira.enable`: Jira enable - Jira 使能
 - `jira.prefix`: Jira project prefix, only valid when Jira enable is picked - Jira 项目前缀, 仅在 Jira 使能启用时有效
@@ -138,6 +139,9 @@ Signed-off-by: Signer <signer@sample.com>
   "gitCommitMessage.language": "en",
   "gitCommitMessage.customTypes": {
     "customType": "custom type description"
+  },
+  "gitCommitMessage.customScopes": {
+    "customScope": "custom scope description"
   },
   "gitCommitMessage.jira.enable": true,
   "gitCommitMessage.jira.prefix": "PROJECT-",
