@@ -1,8 +1,8 @@
 {
     "clear": "清除",
     "custom": "自定义",
-    "customScopes": "自定义范围, 如: `{ \"customScope\": \"(customScope) custom scope description\" }`",
-    "customTypes": "自定义类型, 如: `{ \"customType\": \"(customType) custom type description\" }`",
+    "customScopes": "自定义范围, 如: `{ \"customScope\": \"$(codicon) custom scope description\" }`",
+    "customTypes": "自定义类型, 如: `{ \"customType\": \"$(codicon) custom type description\" }`",
     "description": "由自定义模板生成固定格式的 git 提交说明",
     "edit": "编辑",
     "general": "通用",

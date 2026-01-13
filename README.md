@@ -138,10 +138,10 @@ Signed-off-by: Signer <signer@sample.com>
 {
   "gitCommitMessage.language": "en",
   "gitCommitMessage.customTypes": {
-    "customType": "custom type description"
+    "customType": "$(codicon) custom type description"
   },
   "gitCommitMessage.customScopes": {
-    "customScope": "custom scope description"
+    "customScope": "$(codicon) custom scope description"
   },
   "gitCommitMessage.jira.enable": true,
   "gitCommitMessage.jira.prefix": "PROJECT-",

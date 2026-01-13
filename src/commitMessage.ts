@@ -39,6 +39,21 @@ function getRepo() {
   return repo;
 }
 
+function parseLabel(label: string): {
+  icon?: string;
+  text: string;
+} {
+  const match = label.match(/^\$\(([^)]+)\)\s*(.*)$/);
+  if (!match) {
+    return {
+      text: label.trim(),
+    };
+  }
+  return {
+    icon: match[1],
+    text: match[2].trim(),
+  };
+}
 export async function edit(context: ExtensionContext) {
   type QuickPickItemWithValue = QuickPickItem & {
     value: string;
@@ -299,12 +314,15 @@ export async function edit(context: ExtensionContext) {
           description: "",
           value: "",
         },
-        ...Object.keys(config.customTypes)?.map((label) => ({
-          label,
-          value: label,
-          description: config.customTypes[label],
-          iconPath: new ThemeIcon("blank"),
-        }))
+        ...Object.keys(config.customTypes)?.map((label) => {
+          const { text, icon } = parseLabel(config.customTypes[label]);
+          return {
+            label,
+            value: label,
+            description: text,
+            iconPath: new ThemeIcon(icon || "blank"),
+          };
+        })
       );
     }
     if (state.type && !items.map((x) => x.value).includes(state.type)) {
@@ -381,12 +399,15 @@ export async function edit(context: ExtensionContext) {
           description: "",
           value: "",
         },
-        ...Object.keys(config.customScopes)?.map((label) => ({
-          label,
-          value: label,
-          description: config.customScopes[label],
-          iconPath: new ThemeIcon("blank"),
-        }))
+        ...Object.keys(config.customScopes)?.map((label) => {
+          const { text, icon } = parseLabel(config.customScopes[label]);
+          return {
+            label,
+            value: label,
+            description: text,
+            iconPath: new ThemeIcon(icon || "blank"),
+          };
+        })
       );
     }
     if (state.scope && !items.map((x) => x.value).includes(state.scope)) {
