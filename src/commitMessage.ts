@@ -16,7 +16,7 @@ import { renderString } from "nunjucks";
 async function getI18n(context: ExtensionContext, language?: string) {
   if (language && language !== "en") {
     const uri = Uri.file(
-      `${context.extensionPath}/l10n/bundle.l10n.${language}.json`
+      `${context.extensionPath}/l10n/bundle.l10n.${language}.json`,
     );
     const content = await workspace.fs.readFile(uri);
     return JSON.parse(Buffer.from(content).toString("utf8"));
@@ -111,11 +111,11 @@ export async function edit(context: ExtensionContext) {
     const templates = {
       general: [
         "{% if scope %}",
-        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}({{ scope }}): {{ summary }}",
+        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}({{ scope }}){% if breakingChange %}!{% endif %}: {{ summary }}",
         "{% elif type %}",
-        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}: {{ summary }}",
+        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}{% if breakingChange %}!{% endif %}: {{ summary }}",
         "{% else %}",
-        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ summary }}",
+        "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{% if breakingChange %}! {% endif %}{{ summary }}",
         "{% endif %}",
         "",
         "{{ detail }}",
@@ -194,7 +194,7 @@ export async function edit(context: ExtensionContext) {
         Reporter: t("Reported-by"),
         Reviewer: t("Reviewed-by"),
         Signer: t("Signed-off-by"),
-      }
+      },
     )
       ?.replace(/^\n+/g, "")
       ?.replace(/&#92;n/g, "\n")
@@ -243,7 +243,7 @@ export async function edit(context: ExtensionContext) {
         label: l10n.t("revert"),
         value: t("revert"),
         description: l10n.t(
-          "Revert code, restore the previous version of the code"
+          "Revert code, restore the previous version of the code",
         ),
         iconPath: new ThemeIcon("discard"),
       },
@@ -257,7 +257,7 @@ export async function edit(context: ExtensionContext) {
         label: l10n.t("refactor"),
         value: t("refactor"),
         description: l10n.t(
-          "Refactor code to fix issues, support new features, or optimize performance"
+          "Refactor code to fix issues, support new features, or optimize performance",
         ),
         iconPath: new ThemeIcon("lightbulb"),
       },
@@ -301,7 +301,7 @@ export async function edit(context: ExtensionContext) {
         label: l10n.t("ci"),
         value: t("ci"),
         description: l10n.t(
-          "Modify only continuous integration configuration files"
+          "Modify only continuous integration configuration files",
         ),
         iconPath: new ThemeIcon("sync"),
       },
@@ -322,7 +322,7 @@ export async function edit(context: ExtensionContext) {
             description: text,
             iconPath: new ThemeIcon(icon || "blank"),
           };
-        })
+        }),
       );
     }
     if (state.type && !items.map((x) => x.value).includes(state.type)) {
@@ -338,7 +338,7 @@ export async function edit(context: ExtensionContext) {
           description: l10n.t("Custom input"),
           value: state.type,
           iconPath: new ThemeIcon("pencil"),
-        }
+        },
       );
     }
     items.push(
@@ -353,7 +353,7 @@ export async function edit(context: ExtensionContext) {
         value: "",
         description: l10n.t("Not selected"),
         iconPath: new ThemeIcon("circle-slash"),
-      }
+      },
     );
     state.typeItem = (await input.showQuickPick({
       step: 1 + (config.jira.enable ? 1 : 0),
@@ -407,7 +407,7 @@ export async function edit(context: ExtensionContext) {
             description: text,
             iconPath: new ThemeIcon(icon || "blank"),
           };
-        })
+        }),
       );
     }
     if (state.scope && !items.map((x) => x.value).includes(state.scope)) {
@@ -423,7 +423,7 @@ export async function edit(context: ExtensionContext) {
           description: l10n.t("Custom input"),
           value: state.scope,
           iconPath: new ThemeIcon("pencil"),
-        }
+        },
       );
     }
     items.push(
@@ -438,7 +438,7 @@ export async function edit(context: ExtensionContext) {
         value: "",
         description: l10n.t("Not selected"),
         iconPath: new ThemeIcon("circle-slash"),
-      }
+      },
     );
     state.scopeItem = (await input.showQuickPick({
       step: 2 + (config.jira.enable ? 1 : 0),
@@ -490,7 +490,7 @@ export async function edit(context: ExtensionContext) {
 
   async function inputBreakingChange(
     input: MultiStepInput,
-    state: Partial<State>
+    state: Partial<State>,
   ) {
     state.breakingChange = await input.showInputBox({
       step: 5 + (config.jira.enable ? 1 : 0),
@@ -525,7 +525,7 @@ export async function edit(context: ExtensionContext) {
             picked: x.picked,
             name: x.name,
             email: x.email,
-          })
+          }),
         ),
       })) as QuickPickItemWithValue[];
       updateGitCommitMessage(state);
@@ -552,7 +552,7 @@ export async function edit(context: ExtensionContext) {
             picked: x.picked,
             name: x.name,
             email: x.email,
-          })
+          }),
         ),
       })) as QuickPickItemWithValue[];
       updateGitCommitMessage(state);
@@ -584,7 +584,7 @@ export async function edit(context: ExtensionContext) {
             label: l10n.t("Check"),
             value: "Check",
             description: l10n.t(
-              "Please check the change message, you can go back to modify it, and select done after confirmation"
+              "Please check the change message, you can go back to modify it, and select done after confirmation",
             ),
             iconPath: new ThemeIcon("circle-large-outline"),
           },
@@ -604,7 +604,7 @@ export async function edit(context: ExtensionContext) {
             label: l10n.t("Done & Commit"),
             value: "Done & Commit",
             description: l10n.t(
-              "Selection done & commit and then exit, goodbye"
+              "Selection done & commit and then exit, goodbye",
             ),
             iconPath: new ThemeIcon("pass-filled"),
           },
@@ -612,7 +612,7 @@ export async function edit(context: ExtensionContext) {
             label: l10n.t("Done & Stage All & Commit"),
             value: "Done & Stage All & Commit",
             description: l10n.t(
-              "Selection done & stage all & commit and then exit, goodbye"
+              "Selection done & stage all & commit and then exit, goodbye",
             ),
             iconPath: new ThemeIcon("pass-filled"),
           },

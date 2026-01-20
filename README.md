@@ -44,7 +44,7 @@ Git 图形中提交的悬浮详细信息如下, 点击问题单链接可以跳�
 ## General
 
 ```
-[PROJECT-1234] perf(scope): summary
+[PROJECT-1234] perf(scope)!: summary
 
 detail
 
@@ -82,7 +82,7 @@ Signed-off-by: Signer <signer@sample.com>
 ## 通用
 
 ```
-[PROJECT-1234] 优化(范围): 摘要
+[PROJECT-1234] 优化(范围)!: 摘要
 
 详情
 
@@ -199,11 +199,11 @@ If you need to customize it, you can configure a text line list. The complete te
   "gitCommitMessage.template": "custom",
   "gitCommitMessage.template.custom": [
     "{% if scope %}",
-    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}({{ scope }}): {{ summary }}",
+    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}({{ scope }}){% if breakingChange %}!{% endif %}: {{ summary }}",
     "{% elif type %}",
-    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}: {{ summary }}",
+    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}{% if breakingChange %}!{% endif %}: {{ summary }}",
     "{% else %}",
-    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ summary }}",
+    "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{% if breakingChange %}! {% endif %}{{ summary }}",
     "{% endif %}",
     "",
     "{{ detail }}",
