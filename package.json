@@ -5,7 +5,7 @@
   "repository": "https://github.com/lar-ry/git-commit-message",
   "publisher": "larry-lan",
   "icon": "assets/logo.png",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -71,16 +71,18 @@
           "type": "string",
           "description": "%template%",
           "enum": [
-            "general",
-            "legacy",
+            "typeScopeJiraSummary",
+            "jiraTypeScopeSummary",
+            "typeJiraScopeSummary",
             "custom"
           ],
           "enumItemLabels": [
-            "%general%",
-            "%legacy%",
+            "%typeScopeJiraSummary%",
+            "%jiraTypeScopeSummary%",
+            "%typeJiraScopeSummary%",
             "%custom%"
           ],
-          "default": "general"
+          "default": "typeScopeJiraSummary"
         },
         "gitCommitMessage.template.custom": {
           "type": "array",
@@ -203,7 +205,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
+    "@types/node": "^22.19.17",
     "@types/nunjucks": "^3.2.6",
     "@types/vscode": "^1.78.0",
     "@typescript-eslint/eslint-plugin": "^8.42.0",

@@ -109,7 +109,40 @@ export async function edit(context: ExtensionContext) {
 
   function updateGitCommitMessage(state: Partial<State>) {
     const templates = {
-      general: [
+      // typeScopeJiraSummary: type(scope)!: [jira] summary
+      typeScopeJiraSummary: [
+        "{% if scope %}",
+        "{{ type }}({{ scope }}){% if breakingChange %}!{% endif %}: {% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ summary }}",
+        "{% elif type %}",
+        "{{ type }}{% if breakingChange %}!{% endif %}: {% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ summary }}",
+        "{% else %}",
+        "{% if breakingChange %}! {% endif %}{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ summary }}",
+        "{% endif %}",
+        "",
+        "{{ detail }}",
+        "",
+        "{% if breakingChange %}",
+        "{{ BREAKING_CHANGE }}: {{ breakingChange }}",
+        "{% endif %}",
+        "",
+        "{% if jira.enable and jira.url and jira.id %}",
+        "[{{ jira.prefix }}{{ jira.id }}]: {{ jira.url }}{{ jira.prefix }}{{ jira.id }}",
+        "{% endif %}",
+        "",
+        "{% for reporter in reporters -%}",
+        "{{ Reporter }}: {{ reporter.name }} <{{ reporter.email }}>",
+        "{% endfor %}",
+        "",
+        "{% for reviewer in reviewers -%}",
+        "{{ Reviewer }}: {{ reviewer.name }} <{{ reviewer.email }}>",
+        "{% endfor %}",
+        "",
+        "{% if signer.name or signer.email %}",
+        "{{ Signer }}: {{ signer.name }} <{{ signer.email }}>",
+        "{% endif %}",
+      ],
+      // jiraTypeScopeSummary: [jira] type(scope)!: summary
+      jiraTypeScopeSummary: [
         "{% if scope %}",
         "{% if jira.id %}[{{ jira.prefix }}{{ jira.id }}] {% endif %}{{ type }}({{ scope }}){% if breakingChange %}!{% endif %}: {{ summary }}",
         "{% elif type %}",
@@ -140,7 +173,8 @@ export async function edit(context: ExtensionContext) {
         "{{ Signer }}: {{ signer.name }} <{{ signer.email }}>",
         "{% endif %}",
       ],
-      legacy: [
+      // typeJiraScopeSummary: type[jira]scope: summary
+      typeJiraScopeSummary: [
         "{% if jira.id %}",
         "{{ type }}[{{ jira.prefix }}{{ jira.id }}]{{ scope }}: {{ summary }}",
         "{% elif type and scope %}",
@@ -178,7 +212,7 @@ export async function edit(context: ExtensionContext) {
     repo.inputBox.value = renderString(
       (
         templates?.[config.template as keyof typeof templates] ??
-        templates.general
+        templates.typeScopeJiraSummary
       )?.join("\n"),
       {
         type: state?.type ?? "",
@@ -371,26 +405,7 @@ export async function edit(context: ExtensionContext) {
   }
 
   async function pickScope(input: MultiStepInput, state: Partial<State>) {
-    const items: QuickPickItemWithValue[] = [
-      {
-        label: l10n.t("config"),
-        value: t("config"),
-        description: l10n.t("config"),
-        iconPath: new ThemeIcon("settings"),
-      },
-      {
-        label: l10n.t("display"),
-        value: t("display"),
-        description: l10n.t("display"),
-        iconPath: new ThemeIcon("symbol-color"),
-      },
-      {
-        label: l10n.t("system"),
-        value: t("system"),
-        description: l10n.t("system"),
-        iconPath: new ThemeIcon("gear"),
-      },
-    ];
+    const items: QuickPickItemWithValue[] = [];
     if (Object.keys(config.customScopes)?.length) {
       items.push(
         {
@@ -426,6 +441,32 @@ export async function edit(context: ExtensionContext) {
         },
       );
     }
+    items.push(
+      {
+        label: l10n.t("Build-in options"),
+        kind: QuickPickItemKind.Separator,
+        description: "",
+        value: "",
+      },
+      {
+        label: l10n.t("config"),
+        value: t("config"),
+        description: l10n.t("config"),
+        iconPath: new ThemeIcon("settings"),
+      },
+      {
+        label: l10n.t("display"),
+        value: t("display"),
+        description: l10n.t("display"),
+        iconPath: new ThemeIcon("symbol-color"),
+      },
+      {
+        label: l10n.t("system"),
+        value: t("system"),
+        description: l10n.t("system"),
+        iconPath: new ThemeIcon("gear"),
+      },
+    );
     items.push(
       {
         label: l10n.t("Not selected"),
