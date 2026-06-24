@@ -39,54 +39,6 @@ Git 图形中提交的悬浮详细信息如下, 点击问题单链接可以跳�
 
 > 从命令面板运行 `Git 提交说明: 清除`，可以清除更改消息输入框
 
-## Example in English
-
-### Title
-
-`[Jira] type(scope)!: summary`: `[PROJECT-1234] perf(system)!: improve a issue`
-`type[Jira]scope: summary`: `perf[PROJECT-1234]system!: improve a issue`
-`type(scope)!: [Jira] summary`: `perf(system)!: [PROJECT-1234] improve a issue`
-
-### Content
-
-```
-detail
-
-BREAKING_CHANGE: breaking change
-
-[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
-
-Reported-by: Reporter <reporter@sample.com>
-
-Reviewed-by: Reviewer <reviewer@sample.com>
-
-Signed-off-by: Signer <signer@sample.com>
-```
-
-## 中文示例
-
-### 标题
-
-`[Jira] 类型(范围)!: 摘要`: `[PROJECT-1234] 优化(系统)!: 改进一个问题`
-`类型[Jira]范围: 摘要`: `优化[PROJECT-1234]系统!: 改进一个问题`
-`类型(范围)!: [Jira] 摘要`: `优化(系统)!: [PROJECT-1234] 改进一个问题`
-
-### 内容
-
-```
-详情
-
-破坏性变更: 破坏性变更
-
-[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
-
-报告人: Reporter <reporter@sample.com>
-
-审阅人: Reviewer <reviewer@sample.com>
-
-提交人: Signer <signer@sample.com>
-```
-
 ## Setting - 设置
 
 - `customScopes`: Custom scopes - 自定义范围
@@ -105,6 +57,7 @@ Signed-off-by: Signer <signer@sample.com>
   - `reviewers[].picked`: Picked default - 是否默认勾选
 - `signer.email`: Signer's email - 提交人邮箱
 - `signer.name`: Signer's name - 提交人名字
+- `template`: Template - 模板
 
 ```json
 {
@@ -127,8 +80,61 @@ Signed-off-by: Signer <signer@sample.com>
     { "name": "Reviewer2", "email": "reviewer2@sample.com" }
   ],
   "gitCommitMessage.signer.email": "signer@sample.com",
-  "gitCommitMessage.signer.name": "Signer"
+  "gitCommitMessage.signer.name": "Signer",
+  "gitCommitMessage.template": "typeScopeJiraSummary"
 }
+```
+
+## Example in English
+
+### Title
+
+| Template                       | Render                                          |
+| ------------------------------ | ----------------------------------------------- |
+| `[Jira] type(scope)!: summary` | `[PROJECT-1234] perf(system)!: improve a issue` |
+| `type[Jira]scope: summary`     | `perf[PROJECT-1234]system: improve a issue`     |
+| `type(scope)!: [Jira] summary` | `perf(system)!: [PROJECT-1234] improve a issue` |
+
+### Content
+
+```
+detail
+
+BREAKING_CHANGE: breaking change
+
+[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
+
+Reported-by: Reporter <reporter@sample.com>
+
+Reviewed-by: Reviewer <reviewer@sample.com>
+
+Signed-off-by: Signer <signer@sample.com>
+```
+
+## 中文示例
+
+### 标题
+
+| 模板                       | 渲染                                       |
+| -------------------------- | ------------------------------------------ |
+| `[Jira] 类型(范围)!: 摘要` | `[PROJECT-1234] 优化(系统)!: 改进一个问题` |
+| `类型[Jira]范围: 摘要`     | `优化[PROJECT-1234]系统: 改进一个问题`     |
+| `类型(范围)!: [Jira] 摘要` | `优化(系统)!: [PROJECT-1234] 改进一个问题` |
+
+### 内容
+
+```
+详情
+
+破坏性变更: 破坏性变更
+
+[PROJECT-1234]: https://jira.sample.com/browse/PROJECT-1234
+
+报告人: Reporter <reporter@sample.com>
+
+审阅人: Reviewer <reviewer@sample.com>
+
+提交人: Signer <signer@sample.com>
 ```
 
 ## Custom Template - 自定义模板
